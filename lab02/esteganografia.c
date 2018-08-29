@@ -16,10 +16,13 @@ int conv1(int num1) {
 
 /*converte binário pra inteiro*/
 int conv2(int letra) {
-  int num = 0, mult = 1;
-  num = (letra%10)*mult;
-  letra = letra/10;
-  mult = mult*2;
+  int num = 0, mult = 1, i;
+  for (i=0;i<8;i++) {
+    num = (letra%10)*mult;
+    letra = letra/10;
+    mult = mult*2;
+  }
+  printf("%d", num); /*tentando debugar*/
   return num;
 }
 
@@ -36,15 +39,13 @@ int main() {
     scanf("%d", &p[i]);/*alocando os números*/
 
   for (i=0; i<numeros; i += 4){
+    letra = 0;
+    mult = 1; /*sera uma potencia de 100*/
     for (j=0; j<4; j++){
-      letra = 0;
-      mult = 1; /*sera uma potencia de 100*/
       letra += conv1(p[i+j]) * mult;
+      mult = mult*100;
     printf("%c", conv2(letra));
-
     }
-  return 0;
   }
-
   return 0;
 }
