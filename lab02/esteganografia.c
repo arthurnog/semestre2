@@ -19,9 +19,7 @@ int conv2(int letra) {
   int num = 0, mult = 1;
   num = (letra%10)*mult;
   letra = letra/10;
-  mult *= 2;
-  if (letra == 0)
-    return num;
+  mult = mult*2;
   return num;
 }
 
@@ -43,8 +41,7 @@ int main() {
       mult = 1; /*sera uma potencia de 100*/
       letra += conv1(p[i+j]) * mult;
     printf("%c", conv2(letra));
-    if (letra == 0)
-      break;
+
     }
   return 0;
   }
