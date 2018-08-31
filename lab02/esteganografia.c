@@ -27,21 +27,20 @@ int conv2(int letra) {
 
 int main() {
   char tipo[3];
-  int col, lin;
-  int inten;
-  int numeros = col*lin;
-  int *p; /*vetor*/
-  int i, j;
-
-
   scanf("%s", tipo);
+
+  int col, lin;
   scanf("%d %d", &col, &lin);
+
+  int inten;
   scanf("%d", &inten);
 
+  int numeros = col*lin;
+
+  int *p; /*vetor*/
   p = malloc(numeros * sizeof(int));
 
-
-
+  int i, j;
   for (i=0; i < numeros; i++)
     scanf("%d", &p[i]);/*alocando os números*/
 
