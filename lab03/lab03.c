@@ -6,8 +6,8 @@
 typedef struct /*struct com os dados a serem analisados pelo programa*/
 {
   long int CPF;
-  char NOME[41];
-  char EMAIL[31];
+  char NOME[70];
+  char EMAIL[71];
   int IDADE;
 } pessoa;
 
@@ -35,24 +35,36 @@ int main(){
   FILE *arq_in = fopen("read.txt", "r");
   char string[1000];
   int i=0;
+  int n = 1;
   //usar realloc
   //ordenar essa lista usando a idade e o cpf
   //cpf, nome, email, idade\n
-  pessoa *per;
-  per = (pessoa*)realloc(per, 10*sizeof(pessoa));
+  pessoa *per = NULL;
+  per = (pessoa*)realloc(per, n*sizeof(pessoa));
 
-  while(fscanf(arq_in, "%[^\n]s", string) !=EOF) {
+  while(fscanf(arq_in, "%ld, %s %s %d", &per[i].CPF, per[i].NOME, per[i].EMAIL, &per[i].IDADE) != EOF) {
     //enquanto o charactere EOF não aparecer eu vou pegar as informações da linha e aloca na struct
-    fscanf(arq_in, "%li, %s, %s, %d\n", per[i].CPF, per[i].NOME, per[i].EMAIL, per[i].IDADE);
+
+
+    printf("%ld, %s %s %d\n", per[i].CPF, per[i].NOME, per[i].EMAIL, per[i].IDADE);
+
+    "%d"  4423256,
+    "%s"  ctabtsd,v \n\0
+
     i++; /*i = numero de pessoas*/
+    if (i >= n){
+      n = n*2;
+      per = (pessoa*)realloc(per, n*sizeof(pessoa));
+    }
   }
 
   ordena(per,i);
+
   //escrever a saida ordenada em outro arquivo (?)
   FILE *arq_out = fopen("write.txt", "w");
   int j;
   for (j=0; j<i; j++)
-    fprintf (arq_out, "%li, %s, %s, %d\n", per[j].CPF, per[j].NOME, per[j].EMAIL, per[j].IDADE);
+    fprintf (arq_out, "%ld, %s %s %d\n", per[j].CPF, per[j].NOME, per[j].EMAIL, per[j].IDADE);
 
   fclose(arq_out);
   fclose(arq_in);
