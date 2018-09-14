@@ -11,12 +11,14 @@ typedef struct /*struct com os dados a serem analisados pelo programa*/
   int IDADE;
 } pessoa;
 
+/*FUNCAO QUE TROCA DUAS PESSOAS DE LUGAR*/
 void troca(pessoa *a, pessoa *b){
   pessoa aux = *a;
   *a = *b;
   *b = aux;
 }
 
+/*FUNCAO QUE ORDENA PELA IDADE, E QUANDO A IDADE FOR IGUAL ELA ORDENA PELO CPF*/
 void ordena(pessoa per[], int n){
   int a, b;
   for (a=0;a<n-1;a++){
@@ -32,15 +34,15 @@ void ordena(pessoa per[], int n){
 }
 
 int main(){
-  int i=0;
+  int i = 0;
   int n = 1;
-  /*usar realloc*/
+
   /*ordenar essa lista usando a idade e o cpf*/
   /*cpf, nome, email, idade\n*/
   pessoa *per = NULL;
   per = (pessoa*)realloc(per, n*sizeof(pessoa));
 
-  while(scanf("%ld,%[A-Z A-Z],%[A-z@gmail.com],%d", &per[i].CPF, per[i].NOME, per[i].EMAIL, &per[i].IDADE)) {
+  while(scanf("%ld,%[A-Z A-Z],%[A-z@gmail.com],%d", &per[i].CPF, per[i].NOME, per[i].EMAIL, &per[i].IDADE) != EOF) {
     i++; /*i = numero de pessoas*/
     if (i >= n){
       n = n*2;
@@ -53,7 +55,7 @@ int main(){
   /*escrever a saida ordenada*/
   int j;
   for (j=0; j<i; j++)
-    printf ("%ld,%s,%s,%d\n", per[j].CPF, per[j].NOME, per[j].EMAIL, per[j].IDADE);
+    printf ("%ld, %s, %s, %d\n", per[j].CPF, per[j].NOME, per[j].EMAIL, per[j].IDADE);
 
   free(per);
   return 0;
