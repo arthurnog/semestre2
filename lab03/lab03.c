@@ -19,6 +19,7 @@ void troca(pessoa *a, pessoa *b){
 }
 
 /*FUNCAO QUE ORDENA PELA IDADE, E QUANDO A IDADE FOR IGUAL ELA ORDENA PELO CPF*/
+/*
 void ordena(pessoa per[], int n){
   int a, b;
   for (a=0;a<n-1;a++){
@@ -32,6 +33,35 @@ void ordena(pessoa per[], int n){
     }
   }
 }
+*/
+
+void merge(pessoa v[], pessoa aux[], int inicio1, int inicio2, int fim2) {
+  int i = inicio1, j = inicio2, fim1 = inicio2 - 1, k = 0;
+  while ((i <= fim1) && (j <= fim2)) {
+    if (v[i].IDADE < v[j].IDADE)
+      aux[k++] = v[i++];
+    else if ((v[i].IDADE == v[j].IDADE) && (v[i].CPF < v[j].CPF))
+      aux[k++] = v[i++];
+    else
+      aux[k++] = v[j++];
+  }
+  while (i <= fim1)
+    aux[k++] = v[i++];
+  while (j <= fim2)
+    aux[k++] = v[j++];
+  for (i = 0; i < k; i++)
+    v[i + inicio1] = aux[i];
+}
+
+void ordena(pessoa v[], pessoa aux[], int inicio, int fim) {
+  int meio = (inicio + fim) / 2;
+  if (inicio < fim) {
+    ordena(v, aux, inicio, meio);
+    ordena(v, aux, meio + 1, fim);
+    merge(v, aux, inicio, meio + 1, fim);
+  }
+}
+
 
 int main(){
   int i = 0;
@@ -49,8 +79,10 @@ int main(){
       per = (pessoa*)realloc(per, n*sizeof(pessoa));
     }
   }
-
-  ordena(per,i);
+  pessoa *aux = NULL;
+  aux = (pessoa*)realloc(aux, i*sizeof(pessoa));
+  ordena(per,aux,0,i-1);
+  /*ordena(per,i);*/
 
   /*escrever a saida ordenada*/
   int j;
@@ -58,5 +90,6 @@ int main(){
     printf ("%ld, %s, %s, %d\n", per[j].CPF, per[j].NOME, per[j].EMAIL, per[j].IDADE);
 
   free(per);
+  free(aux);
   return 0;
 }
