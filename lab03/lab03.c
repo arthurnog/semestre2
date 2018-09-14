@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <wchar.h>
 
 /*tipos são definidos dentro ou fora da main?*/
 typedef struct /*struct com os dados a serem analisados pelo programa*/
@@ -67,18 +68,17 @@ int main(){
   int i = 0;
   int n = 1;
 
-  /*ordenar essa lista usando a idade e o cpf*/
-  /*cpf, nome, email, idade\n*/
   pessoa *per = NULL;
   per = (pessoa*)realloc(per, n*sizeof(pessoa));
 
-  while(scanf("%ld,%[A-Z A-Z],%[A-z@gmail.com],%d", &per[i].CPF, per[i].NOME, per[i].EMAIL, &per[i].IDADE) != EOF) {
+  while(scanf("%ld,%[A-À A-À],%[A-À@gmail.com],%d", &per[i].CPF, per[i].NOME, per[i].EMAIL, &per[i].IDADE) != EOF) {
     i++; /*i = numero de pessoas*/
     if (i >= n){
       n = n*2;
       per = (pessoa*)realloc(per, n*sizeof(pessoa));
     }
   }
+  per = (pessoa*)realloc(per, i*sizeof(pessoa));
   pessoa *aux = NULL;
   aux = (pessoa*)realloc(aux, i*sizeof(pessoa));
   ordena(per,aux,0,i-1);
