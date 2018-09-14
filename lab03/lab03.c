@@ -40,7 +40,7 @@ int main(){
   pessoa *per = NULL;
   per = (pessoa*)realloc(per, n*sizeof(pessoa));
 
-  while(scanf("%ld,%[A-Z A-Z],%s,%d", &per[i].CPF, per[i].NOME, per[i].EMAIL, &per[i].IDADE)) {
+  while(scanf("%ld,%[A-Z A-Z],%[A-z@gmail.com],%d", &per[i].CPF, per[i].NOME, per[i].EMAIL, &per[i].IDADE)) {
     i++; /*i = numero de pessoas*/
     if (i >= n){
       n = n*2;
