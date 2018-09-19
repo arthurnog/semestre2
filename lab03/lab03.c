@@ -71,14 +71,13 @@ int main(){
   pessoa *per = NULL;
   per = (pessoa*)realloc(per, n*sizeof(pessoa));
 
-  while(scanf("%ld,%[A-À A-À],%[A-À@gmail.com],%d", &per[i].CPF, per[i].NOME, per[i].EMAIL, &per[i].IDADE) != EOF) {
+  while(scanf("%ld,%[^,],%[^,],%d", &per[i].CPF, per[i].NOME, per[i].EMAIL, &per[i].IDADE) != EOF) {
     i++; /*i = numero de pessoas*/
     if (i >= n){
       n = n*2;
       per = (pessoa*)realloc(per, n*sizeof(pessoa));
     }
   }
-  per = (pessoa*)realloc(per, i*sizeof(pessoa));
   pessoa *aux = NULL;
   aux = (pessoa*)realloc(aux, i*sizeof(pessoa));
   ordena(per,aux,0,i-1);
@@ -87,7 +86,7 @@ int main(){
   /*escrever a saida ordenada*/
   int j;
   for (j=0; j<i; j++)
-    printf ("%ld, %s, %s, %d\n", per[j].CPF, per[j].NOME, per[j].EMAIL, per[j].IDADE);
+    printf ("%011ld, %s, %s, %d \n", per[j].CPF, per[j].NOME, per[j].EMAIL, per[j].IDADE);
 
   free(per);
   free(aux);
