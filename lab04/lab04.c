@@ -2,15 +2,45 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct conj1 {
-  int elem1;
-  struct conj1 *prox;
-}conj1;
+typedef struct conj {
+  int elem;
+  struct conj *prox;
+}conj;
 
-typedef struct conj2 {
-  int elem2;
-  struct conj2 *prox;
-}conj2;
+/*imprime a lista
+void imprime(conj *lista) {
+  conj *p
+  p = lista
+  if (p == NULL)
+    return
+  else{
+    printf("%d", p->elem);
+    imprime(p->prox);
+  }
+}
+*/
+
+/*insere elemento na lista
+void inserir(conj *lista, int num) {
+  conj *atual = lista
+  if (atual == NULL){
+    novo = malloc (sizeof (celular));
+    novo->elem = num;
+    atual = novo;
+  }
+  else if (num < atual->prox->elem){
+    conj *novo;
+    novo = malloc (sizeof (celular));
+    novo->elem = num;
+    novo->prox = atual->prox;
+    atual->prox = novo;
+  }
+  else if (num == atual->elem)
+    return;
+  else
+    inserir(atual->prox,num);
+}
+*/
 
 /*insere elementos na lista
 void insere(int x, conj *p){
@@ -30,8 +60,6 @@ void remove (conj *p) {
   free(trash);
 }
 */
-
-//https://www.ime.usp.br/~pf/algoritmos/aulas/lista.html
 
 int main(){
 
