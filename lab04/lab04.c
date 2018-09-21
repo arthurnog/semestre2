@@ -19,7 +19,6 @@ void imprime(con *lista) {
   }
 }
 
-
 /*insere elemento na lista (cmd == i)*/
 void inserir(con *lista, int num) {
   con *atual = lista;
@@ -81,10 +80,10 @@ void remover(con *lista, int num){
 }
 
 /*uniao dos conjuntos fica no conjunto 1 (cmd == u)*/
-con *uniao(con *lista1, con *lista2){
+void uniao(con *lista1, con *lista2){
   /*uniao acaba quando a lista2 acaba*/
   if (lista2 == NULL)
-    return lista1;
+    return;
   else{
     inserir(lista1, lista2->elem);
     uniao(lista1, lista2->prox);
@@ -102,37 +101,30 @@ int busca(con *lista, num){
 }
 
 /*interseccao dos conjuntos fica no conjunto 1 (cmd == x)*/
-con *intersec(con *lista1, con *lista2){
+void intersec(con *lista1, con *lista2){
   if (lista1 == NULL)
-    return lista1;
+    return;
   else{
     /*se o elemento do conjunto 1 nao esta no conjunto 2 ele e removido*/
     if (busca(lista2, lista1->elem)){
       remover(lista1, lista1->elem);
     }
     itersec(lista1->prox, lista2);
-  }  
+  }
 }
 
-
-/*insere elementos na lista
-void insere(int x, con *p){
-  con *nova;
-  nova = malloc (sizeof (celula));
-  nova->elem = x;
-  nova->prox = p->prox;
-  p->prox = nova;
+/*a subtracao e basicamente o inverso da interseccao. se um elemento ESTA no
+  ele sera removido (cmd == b)*/
+void subt(con *lista1, con *lista2){
+  if (lista1 == NULL)
+    return;
+  else{
+    if (! busca(lista2, lista1->elem)){
+      remover(lista1, lista1->elem);
+    }
+    subt(lista1->prox,lista2);
+  }
 }
-*/
-
-/*remove elementos da lista
-void remove (con *p) {
-  con *trash;
-  trash = p->prox;
-  p->prox = trash->prox;
-  free(trash);
-}
-*/
 
 int main(){
 
