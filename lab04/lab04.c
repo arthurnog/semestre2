@@ -2,14 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct conj {
+typedef struct con {
   int elem;
-  struct conj *prox;
-}conj;
+  struct con *prox;
+}con;
 
 /*imprime a lista, depois da execucao de toda funca a funcao imprime e chamada*/
+/*OS DOIS CONJUNTOS SAO IMPRESSOS*/
 /*nao esquecer os {} no começo e no final do print*/
-void imprime(conj *lista) {
+void imprime(con *lista) {
   if (lista->prox == NULL)
     printf("%d", lista->elem);
   else{
@@ -19,9 +20,9 @@ void imprime(conj *lista) {
 }
 
 
-/*insere elemento na lista (cmnd == i)*/
-void inserir(conj *lista, int num) {
-  conj *atual = lista;
+/*insere elemento na lista (cmd == i)*/
+void inserir(con *lista, int num) {
+  con *atual = lista;
   if (atual == NULL){
     novo = malloc (sizeof (celular));
     novo->elem = num;
@@ -33,17 +34,17 @@ void inserir(conj *lista, int num) {
     imprime(lista);
     return;
   else if (num < atual->elem){
-    conj *novo;
+    con *novo;
     novo = malloc (sizeof (celular));
     novo->elem = num;
-    conj *aux;
+    con *aux;
     aux = lista;
     novo->prox = aux;
     lista = novo;
     imprime(lista);
   }
   else if (num < atual->prox->elem){
-    conj *novo;
+    con *novo;
     novo = malloc (sizeof (celular));
     novo->elem = num;
     novo->prox = atual->prox;
@@ -55,10 +56,42 @@ void inserir(conj *lista, int num) {
     inserir(atual->prox,num);
 }
 
+/*pertence (cmd == p)*/
+void pertence(con *lista, int num){
+  if (lista == NULL)
+    printf("NAO\n");
+    return;
+  else if (lista->elem == num)
+    printf("SIM\n");
+    return;
+  else
+    pertence(lista->prox, num);
+}
+
+/*remove elementos dos conuntos (cmd == r)*/
+void remover(con *lista, int num){
+  if (lista->elem == num){
+    con *trash;
+    trash = lista->prox;
+    lista->prox = trash->prox;
+    free(trash);
+    return;
+  }
+  else if (lista == NULL)
+    return;
+  else
+    remover(lista->prox, num);
+}
+
+/*uniao dos conjuntos fica no conjunto 1 (cmd == u)*/
+con *uniao(con *con1, con *con2){
+  
+}
+
 
 /*insere elementos na lista
-void insere(int x, conj *p){
-  conj *nova;
+void insere(int x, con *p){
+  con *nova;
   nova = malloc (sizeof (celula));
   nova->elem = x;
   nova->prox = p->prox;
@@ -67,8 +100,8 @@ void insere(int x, conj *p){
 */
 
 /*remove elementos da lista
-void remove (conj *p) {
-  conj *trash;
+void remove (con *p) {
+  con *trash;
   trash = p->prox;
   p->prox = trash->prox;
   free(trash);
