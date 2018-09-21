@@ -27,11 +27,9 @@ void inserir(con *lista, int num) {
     novo = malloc (sizeof (celular));
     novo->elem = num;
     atual = novo;
-    imprime(lista);
     return;
   }
   else if (num == atual->elem)
-    imprime(lista);
     return;
   else if (num < atual->elem){
     con *novo;
@@ -41,7 +39,7 @@ void inserir(con *lista, int num) {
     aux = lista;
     novo->prox = aux;
     lista = novo;
-    imprime(lista);
+    return;
   }
   else if (num < atual->prox->elem){
     con *novo;
@@ -49,7 +47,6 @@ void inserir(con *lista, int num) {
     novo->elem = num;
     novo->prox = atual->prox;
     atual->prox = novo;
-    imprime(lista);
     return;
   }
   else
@@ -84,8 +81,37 @@ void remover(con *lista, int num){
 }
 
 /*uniao dos conjuntos fica no conjunto 1 (cmd == u)*/
-con *uniao(con *con1, con *con2){
-  
+con *uniao(con *lista1, con *lista2){
+  /*uniao acaba quando a lista2 acaba*/
+  if (lista2 == NULL)
+    return lista1;
+  else{
+    inserir(lista1, lista2->elem);
+    uniao(lista1, lista2->prox);
+  }
+}
+
+/*funcao de busca*/
+int busca(con *lista, num){
+    if (lista == NULL)
+      return 1;
+    else if (lista->elem == num)
+      return 0;
+    else
+      pertence(lista->prox, num);
+}
+
+/*interseccao dos conjuntos fica no conjunto 1 (cmd == x)*/
+con *intersec(con *lista1, con *lista2){
+  if (lista1 == NULL)
+    return lista1;
+  else{
+    /*se o elemento do conjunto 1 nao esta no conjunto 2 ele e removido*/
+    if (busca(lista2, lista1->elem)){
+      remover(lista1, lista1->elem);
+    }
+    itersec(lista1->prox, lista2);
+  }  
 }
 
 
