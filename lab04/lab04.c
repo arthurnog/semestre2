@@ -8,14 +8,13 @@ typedef struct conj {
 }conj;
 
 /*imprime a lista, depois da execucao de toda funca a funcao imprime e chamada*/
+/*nao esquecer os {} no começo e no final do print*/
 void imprime(conj *lista) {
-  conj *p;
-  p = lista;
-  if (p == NULL)
-    return;
+  if (lista->prox == NULL)
+    printf("%d", lista->elem);
   else{
-    printf("%d", p->elem);
-    imprime(p->prox);
+    printf("%d,", lista->elem);
+    imprime(lista->prox);
   }
 }
 
@@ -30,6 +29,19 @@ void inserir(conj *lista, int num) {
     imprime(lista);
     return;
   }
+  else if (num == atual->elem)
+    imprime(lista);
+    return;
+  else if (num < atual->elem){
+    conj *novo;
+    novo = malloc (sizeof (celular));
+    novo->elem = num;
+    conj *aux;
+    aux = lista;
+    novo->prox = aux;
+    lista = novo;
+    imprime(lista);
+  }
   else if (num < atual->prox->elem){
     conj *novo;
     novo = malloc (sizeof (celular));
@@ -39,9 +51,6 @@ void inserir(conj *lista, int num) {
     imprime(lista);
     return;
   }
-  else if (num == atual->elem)
-    imprime(lista);
-    return;
   else
     inserir(atual->prox,num);
 }
