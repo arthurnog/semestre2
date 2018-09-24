@@ -22,32 +22,35 @@ void imprime(con *lista) {
   }
 }
 
+/*funcao "criar no"*/
+con *criar_no(int num) {
+  con *no = (con*) malloc(sizeof(con));
+
+  if (no == NULL)
+    exit(1);
+  no->elem = num;
+  no->prox = NULL;
+  return no;
+}
+
+
 /*insere elemento na lista (cmd == i)*/
 con *inserir(con *lista, int num) {
   con *atual = lista;
   if (atual == NULL){
-    con *novo;
-    novo = malloc (sizeof (con));
-    novo->elem = num;
+    con *novo = criar_no(num);
     atual = novo;
-    return novo;
+    return atual;
   }
   else if (num == atual->elem)
     return atual;
   else if (num < atual->elem){
-    con *novo;
-    novo = malloc (sizeof (con));
-    novo->elem = num;
-    con *aux;
-    aux = lista;
-    novo->prox = aux;
-    lista = novo;
+    con *novo = criar_no(num);
+    novo->prox = atual;
     return novo;
   }
-  else if (num < atual->prox->elem){
-    con *novo;
-    novo = malloc (sizeof (con));
-    novo->elem = num;
+  else if (num < atual->prox->elem && num > atual->elem){
+    con *novo = criar_no(num);
     novo->prox = atual->prox;
     atual->prox = novo;
     return atual;
