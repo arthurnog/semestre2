@@ -133,8 +133,9 @@ int main(){
   con *conj1 = NULL;
   con *conj2 = NULL;
   while (cmd != "s") {
-    scanf("%[a-z] %d %d \n", &cmd, &elem, &c);
+    scanf("%[a-z]", &cmd);
     if (cmd == "i"){
+      scanf(" %d %d \n", &elem, &c);
       if (c == 1)
         inserir(conj1, elem);
       else if (c == 2)
@@ -143,6 +144,7 @@ int main(){
       printf("{"); imprime(conj2); printf("}\n");
     }
     else if(cmd == "p"){
+      scanf(" %d %d \n", &elem, &c);
       if (c == 1)
         pertence(conj1, elem);
       else if (c == 2)
@@ -151,6 +153,7 @@ int main(){
       printf("{"); imprime(conj2); printf("}\n");
     }
     else if(cmd == "r"){
+      scanf(" %d %d \n", &elem, &c);
       if (c == 1)
         remover(conj1, elem);
       else if (c == 2)
