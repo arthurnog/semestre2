@@ -11,7 +11,10 @@ typedef struct con {
 /*OS DOIS CONJUNTOS SAO IMPRESSOS*/
 /*nao esquecer os {} no começo e no final do print*/
 void imprime(con *lista) {
-  if (lista->prox == NULL)
+  if (lista == NULL){
+    return;
+  }
+  else if (lista->prox == NULL)
     printf("%d", lista->elem);
   else{
     printf("%d,", lista->elem);
@@ -20,46 +23,49 @@ void imprime(con *lista) {
 }
 
 /*insere elemento na lista (cmd == i)*/
-void inserir(con *lista, int num) {
+con *inserir(con *lista, int num) {
   con *atual = lista;
   if (atual == NULL){
-    novo = malloc (sizeof (celular));
+    con *novo;
+    novo = malloc (sizeof (con));
     novo->elem = num;
     atual = novo;
-    return;
+    return novo;
   }
   else if (num == atual->elem)
-    return;
+    return atual;
   else if (num < atual->elem){
     con *novo;
-    novo = malloc (sizeof (celular));
+    novo = malloc (sizeof (con));
     novo->elem = num;
     con *aux;
     aux = lista;
     novo->prox = aux;
     lista = novo;
-    return;
+    return novo;
   }
   else if (num < atual->prox->elem){
     con *novo;
-    novo = malloc (sizeof (celular));
+    novo = malloc (sizeof (con));
     novo->elem = num;
     novo->prox = atual->prox;
     atual->prox = novo;
-    return;
+    return atual;
   }
   else
-    inserir(atual->prox,num);
+    return inserir(atual->prox,num);
 }
 
 /*pertence (cmd == p)*/
 void pertence(con *lista, int num){
-  if (lista == NULL)
+  if (lista == NULL){
     printf("NAO\n");
     return;
-  else if (lista->elem == num)
+  }
+  else if (lista->elem == num){
     printf("SIM\n");
     return;
+  }
   else
     pertence(lista->prox, num);
 }
@@ -85,19 +91,19 @@ void uniao(con *lista1, con *lista2){
   if (lista2 == NULL)
     return;
   else{
-    inserir(lista1, lista2->elem);
+    lista1 = inserir(lista1, lista2->elem);
     uniao(lista1, lista2->prox);
   }
 }
 
 /*funcao de busca*/
-int busca(con *lista, num){
+int busca(con *lista, int num){
     if (lista == NULL)
       return 1;
     else if (lista->elem == num)
       return 0;
     else
-      pertence(lista->prox, num);
+      return busca(lista->prox, num);
 }
 
 /*interseccao dos conjuntos fica no conjunto 1 (cmd == x)*/
@@ -109,7 +115,7 @@ void intersec(con *lista1, con *lista2){
     if (busca(lista2, lista1->elem)){
       remover(lista1, lista1->elem);
     }
-    itersec(lista1->prox, lista2);
+    intersec(lista1->prox, lista2);
   }
 }
 
@@ -132,18 +138,18 @@ int main(){
   int elem, c; /*elem = elemento, c = conjunto*/
   con *conj1 = NULL;
   con *conj2 = NULL;
-  while (cmd != "s") {
-    scanf("%[a-z]", &cmd);
-    if (cmd == "i"){
+  while (cmd != 's') {
+    scanf("%c", &cmd);
+    if (cmd == 'i'){
       scanf(" %d %d \n", &elem, &c);
       if (c == 1)
-        inserir(conj1, elem);
+        conj1 = inserir(conj1, elem);
       else if (c == 2)
-        inserir(conj2, elem);
+        conj2 = inserir(conj2, elem);
       printf("{"); imprime(conj1); printf("}\n");
       printf("{"); imprime(conj2); printf("}\n");
     }
-    else if(cmd == "p"){
+    else if(cmd == 'p'){
       scanf(" %d %d \n", &elem, &c);
       if (c == 1)
         pertence(conj1, elem);
@@ -152,7 +158,7 @@ int main(){
       printf("{"); imprime(conj1); printf("}\n");
       printf("{"); imprime(conj2); printf("}\n");
     }
-    else if(cmd == "r"){
+    else if(cmd == 'r'){
       scanf(" %d %d \n", &elem, &c);
       if (c == 1)
         remover(conj1, elem);
@@ -161,17 +167,17 @@ int main(){
       printf("{"); imprime(conj1); printf("}\n");
       printf("{"); imprime(conj2); printf("}\n");
     }
-    else if(cmd == "u"){
+    else if(cmd == 'u'){
       uniao(conj1, conj2);
       printf("{"); imprime(conj1); printf("}\n");
       printf("{"); imprime(conj2); printf("}\n");
     }
-    else if(cmd == "x"){
+    else if(cmd == 'x'){
       intersec(conj1, conj2);
       printf("{"); imprime(conj1); printf("}\n");
       printf("{"); imprime(conj2); printf("}\n");
     }
-    else if(cmd == "b"){
+    else if(cmd == 'b'){
       subt(conj1, conj2);
       printf("{"); imprime(conj1); printf("}\n");
       printf("{"); imprime(conj2); printf("}\n");
@@ -179,6 +185,9 @@ int main(){
   }
   printf("{"); imprime(conj1); printf("}\n");
   printf("{"); imprime(conj2); printf("}\n");
+
+  free(conj1);
+  free(conj2);
 
   return 0;
 }
