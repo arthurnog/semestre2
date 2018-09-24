@@ -32,28 +32,22 @@ con *criar_no(int num) {
 
 
 /*insere elemento na lista (cmd == i)*/
-con *inserir(con *lista, int num) {
-  con *atual = lista;
-  if (atual == NULL){
+con *inserir(con *lista, int num){
+  if (lista == NULL){
     con *novo = criar_no(num);
-    atual = novo;
-    return atual;
-  }
-  else if (num == atual->elem)
-    return atual;
-  else if (num < atual->elem){
-    con *novo = criar_no(num);
-    novo->prox = atual;
     return novo;
   }
-  else if (num < atual->prox->elem && num > atual->elem){
+  else if (num == lista->elem)
+    return lista;
+  else if (num < lista->elem){
     con *novo = criar_no(num);
-    novo->prox = atual->prox;
-    atual->prox = novo;
-    return atual;
+    novo->prox = lista;
+    return novo;
   }
-  else
-    return inserir(atual->prox,num);
+  else {
+    lista->prox = inserir(lista->prox, num);
+    return lista;
+  }
 }
 
 /*pertence (cmd == p)*/
