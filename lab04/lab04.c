@@ -25,9 +25,6 @@ void imprime(con *lista) {
 /*funcao "criar no"*/
 con *criar_no(int num) {
   con *no = (con*) malloc(sizeof(con));
-
-  if (no == NULL)
-    exit(1);
   no->elem = num;
   no->prox = NULL;
   return no;
