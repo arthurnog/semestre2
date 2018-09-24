@@ -127,8 +127,55 @@ void subt(con *lista1, con *lista2){
 }
 
 int main(){
-
-
+  /*enquanto o s não for digitado o programa continuara recebendo comandos*/
+  char cmd;
+  int elem, c; /*elem = elemento, c = conjunto*/
+  con *conj1 = NULL;
+  con *conj2 = NULL;
+  while (cmd != "s") {
+    scanf("%[a-z] %d %d \n", &cmd, &elem, &c);
+    if (cmd == "i"){
+      if (c == 1)
+        inserir(conj1, elem);
+      else if (c == 2)
+        inserir(conj2, elem);
+      printf("{"); imprime(conj1); printf("}\n");
+      printf("{"); imprime(conj2); printf("}\n");
+    }
+    else if(cmd == "p"){
+      if (c == 1)
+        pertence(conj1, elem);
+      else if (c == 2)
+        pertence(conj2, elem);
+      printf("{"); imprime(conj1); printf("}\n");
+      printf("{"); imprime(conj2); printf("}\n");
+    }
+    else if(cmd == "r"){
+      if (c == 1)
+        remover(conj1, elem);
+      else if (c == 2)
+        remover(conj2, elem);
+      printf("{"); imprime(conj1); printf("}\n");
+      printf("{"); imprime(conj2); printf("}\n");
+    }
+    else if(cmd == "u"){
+      uniao(conj1, conj2);
+      printf("{"); imprime(conj1); printf("}\n");
+      printf("{"); imprime(conj2); printf("}\n");
+    }
+    else if(cmd == "x"){
+      intersec(conj1, conj2);
+      printf("{"); imprime(conj1); printf("}\n");
+      printf("{"); imprime(conj2); printf("}\n");
+    }
+    else if(cmd == "b"){
+      subt(conj1, conj2);
+      printf("{"); imprime(conj1); printf("}\n");
+      printf("{"); imprime(conj2); printf("}\n");
+    }
+  }
+  printf("{"); imprime(conj1); printf("}\n");
+  printf("{"); imprime(conj2); printf("}\n");
 
   return 0;
 }
