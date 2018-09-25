@@ -100,16 +100,21 @@ int busca(con *lista, int num){
 }
 
 /*interseccao dos conjuntos fica no conjunto 1 (cmd == x)*/
-void intersec(con *lista1, con *lista2){
+con *intersec(con *lista1, con *lista2){
   if (lista1 == NULL)
-    return;
+    return NULL;
   else{
     /*se o elemento do conjunto 1 nao esta no conjunto 2 ele e removido*/
     if (busca(lista2, lista1->elem)){
       lista1 = remover(lista1, lista1->elem);
+      lista1 = intersec(lista1, lista2);
     }
-    intersec(lista1->prox, lista2);
+    else
+    {
+      lista1->prox = intersec(lista1->prox, lista2);
+    }
   }
+  return lista1;
 }
 
 /*a subtracao e basicamente o inverso da interseccao. se um elemento ESTA no
@@ -166,14 +171,12 @@ int main(){
       printf("{"); imprime(conj2); printf("}\n");
     }
     else if(cmd == 'x'){
-      intersec(conj1, conj2);
+      conj1 = intersec(conj1, conj2);
       printf("{"); imprime(conj1); printf("}\n");
       printf("{"); imprime(conj2); printf("}\n");
     }
     else if(cmd == 'b'){
       subt(conj1, conj2);
-      printf("{"); imprime(conj1); printf("}\n");
-      printf("{"); imprime(conj2); printf("}\n");
     }
   }
   printf("{"); imprime(conj1); printf("}\n");
