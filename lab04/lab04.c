@@ -65,18 +65,17 @@ void pertence(con *lista, int num){
 }
 
 /*remove elementos dos conuntos (cmd == r)*/
-void remover(con *lista, int num){
-  if (lista->elem == num){
+con *remover(con *lista, int num){
+  if (lista == NULL)
+    return NULL;
+  else if (lista->elem == num){
     con *trash;
     trash = lista->prox;
-    lista->prox = trash->prox;
-    free(trash);
-    return;
+    free(lista);
+    return trash;
   }
-  else if (lista == NULL)
-    return;
-  else
-    remover(lista->prox, num);
+  lista->prox = remover(lista->prox, num);
+  return lista;
 }
 
 /*uniao dos conjuntos fica no conjunto 1 (cmd == u)*/
@@ -92,9 +91,9 @@ void uniao(con *lista1, con *lista2){
 
 /*funcao de busca*/
 int busca(con *lista, int num){
-    if (lista == NULL)
+    if (lista == NULL)/*se o elemento nao é encontrado ele retorna 1*/
       return 1;
-    else if (lista->elem == num)
+    else if (lista->elem == num)/*se o elemento e encontrado ele retorna 0*/
       return 0;
     else
       return busca(lista->prox, num);
@@ -107,7 +106,7 @@ void intersec(con *lista1, con *lista2){
   else{
     /*se o elemento do conjunto 1 nao esta no conjunto 2 ele e removido*/
     if (busca(lista2, lista1->elem)){
-      remover(lista1, lista1->elem);
+      lista1 = remover(lista1, lista1->elem);
     }
     intersec(lista1->prox, lista2);
   }
@@ -120,7 +119,7 @@ void subt(con *lista1, con *lista2){
     return;
   else{
     if (! busca(lista2, lista1->elem)){
-      remover(lista1, lista1->elem);
+      lista1 = remover(lista1, lista1->elem);
     }
     subt(lista1->prox,lista2);
   }
@@ -155,9 +154,9 @@ int main(){
     else if(cmd == 'r'){
       scanf(" %d %d \n", &elem, &c);
       if (c == 1)
-        remover(conj1, elem);
+        conj1 = remover(conj1, elem);
       else if (c == 2)
-        remover(conj2, elem);
+        conj2 = remover(conj2, elem);
       printf("{"); imprime(conj1); printf("}\n");
       printf("{"); imprime(conj2); printf("}\n");
     }
