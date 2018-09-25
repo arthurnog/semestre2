@@ -92,9 +92,9 @@ void uniao(con *lista1, con *lista2){
 /*funcao de busca*/
 int busca(con *lista, int num){
     if (lista == NULL)/*se o elemento nao é encontrado ele retorna 1*/
-      return 1;
-    else if (lista->elem == num)/*se o elemento e encontrado ele retorna 0*/
       return 0;
+    else if (lista->elem == num)/*se o elemento e encontrado ele retorna 0*/
+      return 1;
     else
       return busca(lista->prox, num);
 }
@@ -105,7 +105,7 @@ con *intersec(con *lista1, con *lista2){
     return NULL;
   else{
     /*se o elemento do conjunto 1 nao esta no conjunto 2 ele e removido*/
-    if (busca(lista2, lista1->elem)){
+    if (! busca(lista2, lista1->elem)){
       lista1 = remover(lista1, lista1->elem);
       lista1 = intersec(lista1, lista2);
     }
@@ -119,15 +119,20 @@ con *intersec(con *lista1, con *lista2){
 
 /*a subtracao e basicamente o inverso da interseccao. se um elemento ESTA no
   ele sera removido (cmd == b)*/
-void subt(con *lista1, con *lista2){
+con *subt(con *lista1, con *lista2){
   if (lista1 == NULL)
-    return;
+    return NULL;
   else{
-    if (! busca(lista2, lista1->elem)){
+    if (busca(lista2, lista1->elem)){
       lista1 = remover(lista1, lista1->elem);
+      lista1 = subt(lista1, lista2);
     }
-    subt(lista1->prox,lista2);
+    else
+    {
+      lista1->prox = subt(lista1->prox, lista2);
+    }
   }
+  return lista1;
 }
 
 int main(){
@@ -176,7 +181,7 @@ int main(){
       printf("{"); imprime(conj2); printf("}\n");
     }
     else if(cmd == 'b'){
-      subt(conj1, conj2);
+      conj1 = subt(conj1, conj2);
     }
   }
   printf("{"); imprime(conj1); printf("}\n");
