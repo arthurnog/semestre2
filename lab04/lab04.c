@@ -34,8 +34,7 @@ con *criar_no(int num) {
 /*insere elemento na lista (cmd == i)*/
 con *inserir(con *lista, int num){
   if (lista == NULL){
-    con *novo = criar_no(num);
-    return novo;
+    return criar_no(num);
   }
   else if (num == lista->elem)
     return lista;
@@ -79,14 +78,15 @@ con *remover(con *lista, int num){
 }
 
 /*uniao dos conjuntos fica no conjunto 1 (cmd == u)*/
-void uniao(con *lista1, con *lista2){
+con *uniao(con *lista1, con *lista2){
   /*uniao acaba quando a lista2 acaba*/
   if (lista2 == NULL)
-    return;
+    return lista1;
   else{
     lista1 = inserir(lista1, lista2->elem);
-    uniao(lista1, lista2->prox);
+    lista1 = uniao(lista1, lista2->prox);
   }
+  return lista1;
 }
 
 /*funcao de busca*/
@@ -171,7 +171,7 @@ int main(){
       printf("{"); imprime(conj2); printf("}\n");
     }
     else if(cmd == 'u'){
-      uniao(conj1, conj2);
+      conj1 = uniao(conj1, conj2);
       printf("{"); imprime(conj1); printf("}\n");
       printf("{"); imprime(conj2); printf("}\n");
     }
@@ -182,6 +182,8 @@ int main(){
     }
     else if(cmd == 'b'){
       conj1 = subt(conj1, conj2);
+      printf("{"); imprime(conj1); printf("}\n");
+      printf("{"); imprime(conj2); printf("}\n");
     }
   }
   printf("{"); imprime(conj1); printf("}\n");
