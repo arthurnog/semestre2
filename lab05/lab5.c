@@ -68,6 +68,7 @@ void le(pessoa *lista, int pos){
   }
   imprimir(lista);
 }
+
 /*funcao TROCA*/
 
 /*funcao MUDAR SENTIDO na verdade sera apenas uma variavel que sera igual a 0
