@@ -32,6 +32,7 @@ void imprimir(pessoa *lista){
   }
 }
 /*funcao INSERE*/
+/*se o elemento ja existe ele so vira a cabeca*/
 pessoa *inserir(pessoa *lista, char nome[], int pos){
   pessoa *novo = criar_no(nome);
   int i;
