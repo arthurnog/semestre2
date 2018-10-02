@@ -23,27 +23,54 @@ pessoa *criar_no(char name[]){
 }
 
 /*funcao IMPRIMIR*/
-void imprimir(pessoa *lista){
-  pessoa *p = lista->prox;
-  printf("%s ", &lista->nome);
-  while (p != lista){
-    printf("%s ", &p->nome);
-    p = p->prox;
+void imprimir(pessoa *lista, int sentido){
+  /*sentido normal*/
+  if (sentido == 1){
+    pessoa *p = lista->prox;
+    printf("%s ", &lista->nome);
+    while (p != lista){
+      printf("%s ", &p->nome);
+      p = p->prox;
+    }
+  }
+  /*sentido inverso*/
+  else{
+    pessoa *p = lista->ant;
+    printf("%s ", &lista->nome);
+    while (p != lista){
+      printf("%s ", &p->nome);
+      p = p->ant;
+    }
   }
 }
+
+
 /*funcao INSERE*/
 /*se o elemento ja existe ele so vira a cabeca*/
-pessoa *inserir(pessoa *lista, char nome[], int pos){
+pessoa *inserir(pessoa *lista, char nome[], int pos, int sentido){
   pessoa *novo = criar_no(nome);
   int i;
   pessoa *p = lista;
-  for(i = 0; i < pos-1; i++){
-    p = p->prox;
+  /*sentido normal*/
+  if (sentido == 1){
+    for(i = 0; i < pos-1; i++){
+      p = p->prox;
+    }
+    p->ant->prox = novo;
+    novo->ant = p->ant;
+    novo->prox = p;
+    p->ant = novo;
   }
-  p->ant->prox = novo;
-  novo->ant = p->ant;
-  novo->prox = p;
-  p->ant = novo;
+  /*sentido inverso*/
+  else{
+    for(i = 0; i < pos-1; i++){
+      p = p->ant;
+    }
+    p->prox->ant = novo;
+    novo->prox = p->prox;
+    novo->ant = p;
+    p->prox = novo;
+  }
   return novo;
 }
 
@@ -75,13 +102,20 @@ void le(pessoa *lista, int pos){
 /*funcao MUDAR SENTIDO na verdade sera apenas uma variavel que sera igual a 0
   ou 1, caso seja igual a 1 as funcoes giram no sentido normal,
   se for igual a 0 ela ira no sentido oposto*/
+  int mud(int sentido){
+    if (sentido == 1)
+      sentido = 0;
+    else
+      sentido = 1;
+    return sentido;
+  }
 
 
 
 
 
 int main(){
-
+  int sent = 1;
 
   return 0;
 }
