@@ -75,26 +75,46 @@ pessoa *inserir(pessoa *lista, char nome[], int pos, int sentido){
 }
 
 /*funcao REMOVE*/
-pessoa *remover(pessoa *lista, int pos){
+pessoa *remover(pessoa *lista, int pos, int sentido){
   int i;
-  for(i = 0; i < pos-1; i++){
+  /*sentido normal*/
+  if (sentido == 1){
+    for(i = 0; i < pos-1; i++){
+      lista = lista->prox;
+    }
+    pessoa *trash = lista;
+    lista->prox->ant = lista->ant;
+    lista->ant->prox = lista->prox;
     lista = lista->prox;
+    free(trash);
   }
-  pessoa *trash = lista;
-  lista->prox->ant = lista->ant;
-  lista->ant->prox = lista->prox;
-  lista = lista->prox;
-  free(trash);
+  else {
+    for(i = 0; i < pos-1; i++){
+      lista = lista->ant;
+    }
+    pessoa *trash = lista;
+    lista->ant->prox = lista->prox;
+    lista->prox->ant = lista->ant;
+    lista = lista->ant;
+    free(trash);
+  }
   return lista;
 }
 
 /*funcao LE*/
-void le(pessoa *lista, int pos){
+void le(pessoa *lista, int pos, int sentido){
   int i;
-  for(i = 0; i < pos-1; i++){
-    lista = lista->prox;
+  if (sentido == 1){
+    for(i = 0; i < pos-1; i++){
+      lista = lista->prox;
+    }
   }
-  imprimir(lista);
+  else {
+    for(i = 0; i < pos-1; i++){
+      lista = lista->ant;
+    }
+  }
+  imprimir(lista, sentido);
 }
 
 /*funcao TROCA*/
@@ -102,7 +122,7 @@ void le(pessoa *lista, int pos){
 /*funcao MUDAR SENTIDO na verdade sera apenas uma variavel que sera igual a 0
   ou 1, caso seja igual a 1 as funcoes giram no sentido normal,
   se for igual a 0 ela ira no sentido oposto*/
-  int mud(int sentido){
+  int mudar_sentido(int sentido){
     if (sentido == 1)
       sentido = 0;
     else
