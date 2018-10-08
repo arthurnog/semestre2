@@ -118,24 +118,33 @@ void le(pessoa *lista, int pos, int sentido){
 }
 
 /*funcao TROCA*/
+void troca(pessoa *lista, char nome1[], char nome2[]){
+  pessoa *aux1 = lista;
+  pessoa *aux2 = lista;
+  while(aux1->nome != nome1){
+    aux1 = aux1->prox;
+  }
+  while(aux2->nome != nome2){
+    aux2 = aux2->prox;
+  }
+  aux1->nome = nome2;
+  aux2->nome = nome1;
+}
 
 /*funcao MUDAR SENTIDO na verdade sera apenas uma variavel que sera igual a 0
   ou 1, caso seja igual a 1 as funcoes giram no sentido normal,
   se for igual a 0 ela ira no sentido oposto*/
-  int mudar_sentido(int sentido){
-    if (sentido == 1)
-      sentido = 0;
-    else
-      sentido = 1;
-    return sentido;
-  }
-
-
-
-
+int mudar_sentido(int sentido){
+  if (sentido == 1)
+    sentido = 0;
+  else
+    sentido = 1;
+  return sentido;
+}
 
 int main(){
-  int sent = 1;
+  int sentido = 1;
+
 
   return 0;
 }
