@@ -35,17 +35,8 @@ fila *criar_fila(char nome[]){
 /*o maximo da pilha e 5*/
 
 fila *inserir_fila(fila *row, fila *novo){
-  /*a fila tera duas cabecas e sera circular CUIDADO COM O ENDERECO DO COMECO DA FILA*/
+  /*a fila tera uma cabecas e sera circular CUIDADO COM O ENDERECO DO COMECO DA FILA*/
   /*O lugar DAS DUAS CABECAS SERA 0*/
-  if (row->prox->prox != NULL){
-    no *p = row->prox;
-    while (p->prox->prox == NULL)
-      p = p->prox;
-    if(p->lugar < 30){
-      novo->lugar = p->lugar + 1;
-      novo->prox = p->prox;
-      p->prox->ant = novo;
-      p->prox = novo;
     }
     return fila;
   }
