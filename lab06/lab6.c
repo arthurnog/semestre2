@@ -34,31 +34,44 @@ fila *criar_fila(char nome[]){
 /*o maximo de pessoas na fila e no auditorio e 30*/
 /*o maximo da pilha e 5*/
 
-fila *inserir_fila(fila *row, fila *novo){
-  /*a fila tera uma cabecas e sera circular CUIDADO COM O ENDERECO DO COMECO DA FILA*/
+fila *inserir_fila(fila *row, char nome[]){
+  /*a fila tera uma cabeca e sera circular CUIDADO COM O ENDERECO DO COMECO DA FILA*/
   /*O lugar DAS DUAS CABECAS SERA 0*/
-    }
-    return fila;
+  if (fila->ant->lugar < 30){
+    fila *novo = criar_fila(nome);
+    novo->ant = row->ant;
+    novo->prox = row;
+    row->ant = novo;
+    novo->lugar = novo->ant->lugar++;
   }
-  else{
-    novo->lugar = 1;
-    return novo;
-  }
+  return row
 }
 
-no *inserir_pilha(no *pilha, no *novo){
+pilha *inserir_pilha(pilha *stack, char nome, int pos){
   /*se o resto da divisao por 5 for 0 entao a pilha esta cheia*/
-  if (pilha->lugar % 5 != 0)
-    novo->prox = pilha;
-  return novo;
+  /*as pilhas sera-o listas ligadas simples*/
+  if (stack->lugar % 5 != 0){
+    pilha *novo = criar_pilha(nome);
+    novo->prox = stack;
+    novo->lugar = pos;
+    return novo;
+  } else {
+    return stack;
+  }
 }
 
-void remover_fila(no *fila, no *pilha){
-  no *p = fila;
-  fila = fila->prox;
-  pilha = inserir_pilha(pilha, p);
+/*ao remover da fila ela sera' inserida em uma pilha*/
+pilha *remover_fila(fila *row, pilha *stack){
+  /*na-o esquecer que a fila tem cabeça agora*/
+  stack = inserir_pilha(stack, row->prox->nome, row->prox->lugar);
+  fila *trash = row->prox;
+  row->prox = trash->prox;
+  trash->prox->ant = row;
+  free(trash);
+  return stack;
 }
 
+/*FAZER AS PILHAS COM CABECA-????*/
 
 int main(){
 
