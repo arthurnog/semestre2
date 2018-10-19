@@ -74,19 +74,19 @@ pilha *remover_fila(fila *row, pilha *stack){
 /*FAZER AS PILHAS COM CABECA-????*/
 pilha *remover_pilha(pilha *stack){
   /*se a pilha for com cabeca*/
-/*if (stack->prox != NULL){
+  if (stack->prox != NULL){
     pilha *trash = stack->prox;
     stack->prox = trash->prox;
     free(trash);
     return stack;
-  }*/
+  }
   /*se nao*/
-  if (stack != NULL){
+  /*if (stack != NULL){
     pilha *trash = stack;
     stack = stack->prox;
     free(trash);
     return stack;
-  }
+  }*/
 }
 
 fila *libera_fila(fila *row){
@@ -99,7 +99,7 @@ fila *libera_fila(fila *row){
   return row;
 }
 
-pilha *libera_fila(pilha *row){
+pilha *libera_pilha(pilha *stack){
   pilha *trash;
   while(stack != NULL){
     trash = stack;
@@ -111,8 +111,27 @@ pilha *libera_fila(pilha *row){
 
 int main(){
   char cmd[2] = "J";
+  int num;
   while(cmd != "D"){
-    
+    /*a fila é criada com uma cabeca, o lugar da cabeca e 0 e o registro e [Q]*/
+    fila *Row = criar_fila("[Q]");
+    Row->lugar = 0;
+    /*---------------------------------*/
+    /*comecei a mudar de ideia com relacao a colocar cabeca na pilha*/
+    scanf("%c", &cmd);
+    if(cmd == "Q"){
+      /*aqui serao feitas modificacoues na fila*/
+      scanf("%c", &cmd);
+      if(cmd == "I"){
+        scanf("%d", &num);
+        int i;
+        for(i = 0; i<num; i++){
+          char nome[53];
+          scanf("%s\n", &nome);
+          Row = inserir_fila(Row, nome);
+        }
+      }
+    }
   }
   return 0;
 }
