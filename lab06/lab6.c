@@ -72,9 +72,47 @@ pilha *remover_fila(fila *row, pilha *stack){
 }
 
 /*FAZER AS PILHAS COM CABECA-????*/
+pilha *remover_pilha(pilha *stack){
+  /*se a pilha for com cabeca*/
+/*if (stack->prox != NULL){
+    pilha *trash = stack->prox;
+    stack->prox = trash->prox;
+    free(trash);
+    return stack;
+  }*/
+  /*se nao*/
+  if (stack != NULL){
+    pilha *trash = stack;
+    stack = stack->prox;
+    free(trash);
+    return stack;
+  }
+}
+
+fila *libera_fila(fila *row){
+  fila *trash;
+  while(row != NULL){
+    trash = row;
+    row = trash->prox;
+    free(trash);
+  }
+  return row;
+}
+
+pilha *libera_fila(pilha *row){
+  pilha *trash;
+  while(stack != NULL){
+    trash = stack;
+    stack = trash->prox;
+    free(trash);
+  }
+  return stack;
+}
 
 int main(){
-
-
+  char cmd[2] = "J";
+  while(cmd != "D"){
+    
+  }
   return 0;
 }
