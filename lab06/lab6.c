@@ -73,20 +73,20 @@ pilha *remover_fila(fila *row, pilha *stack){
 
 /*FAZER AS PILHAS COM CABECA-????*/
 pilha *remover_pilha(pilha *stack){
-  /*se a pilha for com cabeca*/
+  /*se a pilha for com cabeca
   if (stack->prox != NULL){
     pilha *trash = stack->prox;
     stack->prox = trash->prox;
     free(trash);
     return stack;
-  }
+  }*/
   /*se nao*/
-  /*if (stack != NULL){
+  if (stack != NULL){
     pilha *trash = stack;
     stack = stack->prox;
     free(trash);
     return stack;
-  }*/
+  }
 }
 
 fila *libera_fila(fila *row){
@@ -116,8 +116,9 @@ int main(){
     /*a fila é criada com uma cabeca, o lugar da cabeca e 0 e o registro e [Q]*/
     fila *Row = criar_fila("[Q]");
     Row->lugar = 0;
+    /*as pilhas serao listas ligadas simples*/
+    pilha *s1. *s2, *s3, *s4, *s5, *s6;
     /*---------------------------------*/
-    /*comecei a mudar de ideia com relacao a colocar cabeca na pilha*/
     scanf("%c", &cmd);
     if(cmd == "Q"){
       /*aqui serao feitas modificacoues na fila*/
@@ -131,7 +132,47 @@ int main(){
           Row = inserir_fila(Row, nome);
         }
       }
+      else if(cmd == "R"){
+        scanf("%d", &num);
+        int i;
+        for(i = 0; i<num; i++){
+          char nome[53];
+          scanf("%s\n", &nome);
+          if(Row->prox->lugar <= 5)
+            s1 = remover_fila(Row, s1);
+          else if(Row->prox->lugar <= 10)
+            s2 = remover_fila(Row, s2);
+          else if(Row->prox->lugar <= 15)
+            s3 = remover_fila(Row, s3);
+          else if(Row->prox->lugar <= 20)
+            s4 = remover_fila(Row, s4);
+          else if(Row->prox->lugar <= 25)
+            s5 = remover_fila(Row, s5);
+          else if(Row->prox->lugar <= 30)
+            s6 = remover_fila(Row, s6);
+        }
+      }
+    }
+    if(cmd == "S"){
+      scanf("%c", &cmd);
+      scanf("%d", &num);
+      int i;
+      for(i = 0; i < num; i++){
+        if (s6 != NULL)
+          s6 = remover_pilha(s6);
+        else if(s5 !=NULL)
+          s5 = remover_pilha(s5);
+        else if(s4 !=NULL)
+          s4 = remover_pilha(s4);
+        else if(s3 !=NULL)
+          s3 = remover_pilha(s3);
+        else if(s2 !=NULL)
+          s2 = remover_pilha(s2);
+        else if(s1 !=NULL)
+          s1 = remover_pilha(s1);
+      }
     }
   }
+}
   return 0;
 }
