@@ -126,7 +126,24 @@ void imprime_pilha(pilha *stack){
   }
 }
 /*---------------------------------------------------------------------------*/
-/*essa funcao imprime os dados de todas as pessoas no auditorio e na fila*/
+
+/*essas funcoes imprime os dados de todas as pessoas no auditorio e na fila*/
+void dados_pilha(pilha *stack){
+  while( stack != NULL){
+    printf("%d,%s\n", stack->lugar, stack->registro);
+    stack = stack->prox;
+  }
+}
+
+void dados_fila(fila *row){
+  fila *aux = row->prox;
+  while(aux!=row){
+    printf("%d,%s\n", aux->lugar, aux->registro);
+    aux = aux->prox;
+  }
+}
+/*---------------------------------------------------------------------------*/
+
 int main(){
   char cmd[2] = "J";
   int num;
@@ -191,8 +208,23 @@ int main(){
       }
     }
     if(cmd == "P"){
-
+      imprime_fila(Row); printf("\n");
+      printf("[S1]"); imprime_pilha(s1); printf("\n");
+      printf("[S2]"); imprime_pilha(s2); printf("\n");
+      printf("[S3]"); imprime_pilha(s3); printf("\n");
+      printf("[S4]"); imprime_pilha(s4); printf("\n");
+      printf("[S5]"); imprime_pilha(s5); printf("\n");
+      printf("[S6]"); imprime_pilha(s6); printf("\n");
     }
+  }
+  if(cmd == "D"){
+    dados_pilha(s1);
+    dados_pilha(s2);
+    dados_pilha(s3);
+    dados_pilha(s4);
+    dados_pilha(s5);
+    dados_pilha(s6);
+    dados_pilha(Row);
   }
   return 0;
 }
