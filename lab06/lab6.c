@@ -26,8 +26,8 @@ pilha *criar_pilha(char nome[]){
 fila *criar_fila(char nome[]){
   fila *novo = (fila*) malloc(sizeof(fila));
   novo->registro = nome;
-  novo->prox = NULL;
-  novo->ant = NULL;
+  novo->prox = novo;
+  novo->ant = novo;
   return novo;
 }
 
@@ -109,6 +109,24 @@ pilha *libera_pilha(pilha *stack){
   return stack;
 }
 
+/*essas func,a-o ira-o imprimir a fila e as pilhas quando o cmd for igual a P*/
+void imprime_fila(fila *row){
+  fila *aux = row->prox;
+  printf("%s", row->registro);
+  while(aux != row){
+    printf("%d,", aux->lugar);
+    aux = aux->prox;
+  }
+}
+
+void imprime_pilha(pilha *stack){
+  while(stack != NULL){
+    printf("%d", stack->lugar);
+    stack = stack->prox;
+  }
+}
+/*---------------------------------------------------------------------------*/
+/*essa funcao imprime os dados de todas as pessoas no auditorio e na fila*/
 int main(){
   char cmd[2] = "J";
   int num;
@@ -172,7 +190,9 @@ int main(){
           s1 = remover_pilha(s1);
       }
     }
+    if(cmd == "P"){
+
+    }
   }
-}
   return 0;
 }
