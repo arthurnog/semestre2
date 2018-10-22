@@ -137,7 +137,7 @@ void dados_fila(fila *row){
 /*---------------------------------------------------------------------------*/
 
 int main(){
-  char cmd[3] = "J";
+  char cmd[2] = "J";
   int num;
   /*a fila é criada com uma cabeca, o lugar da cabeca e 0 e o registro e [Q]*/
   fila *Row = criar_fila("[Q]");
