@@ -39,10 +39,11 @@ fila *inserir_fila(fila *row, char nome[]){
   /*O lugar DAS DUAS CABECAS SERA 0*/
   if(row->ant->lugar < 30){
     fila *novo = criar_fila(nome);
-    novo->ant = row->ant;
+    row->ant->prox = novo;
     novo->prox = row;
+    novo->ant = row->ant;
     row->ant = novo;
-    novo->lugar = novo->ant->lugar++;
+    novo->lugar = novo->prox->lugar++;
   }
   return row;
 }
