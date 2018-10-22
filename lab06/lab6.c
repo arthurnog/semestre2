@@ -158,7 +158,7 @@ int main(){
         int i;
         for(i = 0; i<num; i++){
           char nome[53];
-          scanf("%[^\n]s", nome);
+          scanf("%s\n", nome);
           end = inserir_fila(end, nome);
           fimd = inserir_fila(fimd, nome);
         }
