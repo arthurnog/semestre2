@@ -16,7 +16,7 @@ typedef struct fila{
   struct fila *ant;
 }fila;
 
-pilha *criar_pilha(char nome){
+pilha *criar_pilha(char nome[]){
   pilha *novo = (pilha*) malloc(sizeof(pilha));
   novo->registro = nome;
   novo->prox = NULL;
@@ -77,8 +77,8 @@ pilha *remover_pilha(pilha *stack){
     pilha *trash = stack;
     stack = stack->prox;
     free(trash);
-    return stack;
   }
+  return stack;
 }
 
 fila *libera_fila(fila *row){
@@ -121,7 +121,7 @@ void imprime_pilha(pilha *stack){
 
 /*essas funcoes imprime os dados de todas as pessoas no auditorio e na fila*/
 void dados_pilha(pilha *stack){
-  while( stack != NULL){
+  while(stack != NULL){
     printf("%d,%s\n", stack->lugar, stack->registro);
     stack = stack->prox;
   }
@@ -137,34 +137,34 @@ void dados_fila(fila *row){
 /*---------------------------------------------------------------------------*/
 
 int main(){
-  char cmd[2] = "J";
+  char cmd[3] = "J";
   int num;
-  while(cmd != "D"){
-    /*a fila é criada com uma cabeca, o lugar da cabeca e 0 e o registro e [Q]*/
-    fila *Row = criar_fila("[Q]");
-    Row->lugar = 0;
-    /*as pilhas serao listas ligadas simples*/
-    pilha *s1, *s2, *s3, *s4, *s5, *s6;
-    /*---------------------------------*/
-    scanf("%c", &cmd);
-    if(cmd == "Q"){
+  /*a fila é criada com uma cabeca, o lugar da cabeca e 0 e o registro e [Q]*/
+  fila *Row = criar_fila("[Q]");
+  Row->lugar = 0;
+  /*as pilhas serao listas ligadas simples*/
+  pilha *s1, *s2, *s3, *s4, *s5, *s6;
+  /*---------------------------------*/
+  while(cmd[0] != 'D'){
+    scanf("%c", cmd);
+    if(cmd[0] == 'Q'){
       /*aqui serao feitas modificacoues na fila*/
-      scanf("%c", &cmd);
-      if(cmd == "I"){
+      scanf("%c", cmd);
+      if(cmd[0] == 'I'){
         scanf("%d", &num);
         int i;
         for(i = 0; i<num; i++){
           char nome[53];
-          scanf("%s\n", &nome);
+          scanf("%s\n", nome);
           Row = inserir_fila(Row, nome);
         }
       }
-      else if(cmd == "R"){
+      else if(cmd[0] == 'R'){
         scanf("%d", &num);
         int i;
         for(i = 0; i<num; i++){
           char nome[53];
-          scanf("%s\n", &nome);
+          scanf("%s\n", nome);
           if(Row->prox->lugar <= 5)
             s1 = remover_fila(Row, s1);
           else if(Row->prox->lugar <= 10)
@@ -180,8 +180,8 @@ int main(){
         }
       }
     }
-    if(cmd == "S"){
-      scanf("%c", &cmd);
+    if(cmd[0] == 'S'){
+      scanf("%c", cmd);
       scanf("%d", &num);
       int i;
       for(i = 0; i < num; i++){
@@ -199,7 +199,7 @@ int main(){
           s1 = remover_pilha(s1);
       }
     }
-    if(cmd == "P"){
+    if(cmd[0] == 'P'){
       imprime_fila(Row); printf("\n");
       printf("[S1]"); imprime_pilha(s1); printf("\n");
       printf("[S2]"); imprime_pilha(s2); printf("\n");
@@ -209,7 +209,7 @@ int main(){
       printf("[S6]"); imprime_pilha(s6); printf("\n");
     }
   }
-  if(cmd == "D"){
+  if(cmd[0] == 'D'){
     dados_pilha(s1);
     dados_pilha(s2);
     dados_pilha(s3);
