@@ -18,14 +18,14 @@ typedef struct fila{
 
 pilha *criar_pilha(char nome[]){
   pilha *novo = (pilha*) malloc(sizeof(pilha));
-  novo->registro = nome;
+  strcpy(novo->registro, nome);
   novo->prox = NULL;
   return novo;
 }
 
 fila *criar_fila(char nome[]){
   fila *novo = (fila*) malloc(sizeof(fila));
-  novo->registro = nome;
+  strcpy(novo->registro, nome);
   novo->prox = novo;
   novo->ant = novo;
   return novo;
@@ -50,7 +50,7 @@ fila *inserir_fila(fila *row, char nome[]){
 pilha *inserir_pilha(pilha *stack, char nome[], int pos){
   /*se o resto da divisao por 5 for 0 entao a pilha esta cheia*/
   /*as pilhas sera-o listas ligadas simples*/
-  if (stack->lugar % 5 != 0){
+  if (stack->lugar % 5 >= 0){
     pilha *novo = criar_pilha(nome);
     novo->prox = stack;
     novo->lugar = pos;
@@ -143,7 +143,7 @@ int main(){
   fila *Row = criar_fila("[Q]");
   Row->lugar = 0;
   /*as pilhas serao listas ligadas simples*/
-  pilha *s1, *s2, *s3, *s4, *s5, *s6;
+  pilha *s1 = NULL, *s2 = NULL, *s3 = NULL, *s4 = NULL, *s5 = NULL, *s6 = NULL;
   /*---------------------------------*/
   while(cmd[0] != 'D'){
     scanf("%c", cmd);
@@ -216,7 +216,7 @@ int main(){
     dados_pilha(s4);
     dados_pilha(s5);
     dados_pilha(s6);
-    dados_pilha(Row);
+    dados_fila(Row);
   }
   return 0;
 }
