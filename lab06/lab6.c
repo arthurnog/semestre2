@@ -3,87 +3,91 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct pilha{
+typedef struct no{
   int lugar;
   char registro[53];
-  struct pilha *prox;
-}pilha;
+  struct no *prox;
+}no;
 
-typedef struct fila{
-  int lugar;
-  char registro[53];
-  struct fila *prox;
-  struct fila *ant;
-}fila;
-
-pilha *criar_pilha(char nome[]){
-  pilha *novo = (pilha*) malloc(sizeof(pilha));
+no *criar_no(char nome[]){
+  no *novo = (no*) malloc(sizeof(no));
   strcpy(novo->registro, nome);
   novo->prox = NULL;
   return novo;
 }
 
-fila *criar_fila(char nome[]){
-  fila *novo = (fila*) malloc(sizeof(fila));
-  strcpy(novo->registro, nome);
-  novo->prox = novo;
-  novo->ant = novo;
-  return novo;
-}
 
 /*o maximo de pessoas na fila e no auditorio e 30*/
 /*o maximo da pilha e 5*/
 
-fila *inserir_fila(fila *row, char nome[]){
-  /*a fila tera uma cabeca e sera circular CUIDADO COM O ENDERECO DO COMECO DA FILA*/
-  /*O lugar DAS DUAS CABECAS SERA 0*/
-  if(row->ant->lugar < 30){
-    fila *novo = criar_fila(nome);
-    row->ant->prox = novo;
-    novo->prox = row;
-    novo->ant = row->ant;
-    row->ant = novo;
-    novo->lugar = novo->prox->lugar++;
+no *inserir_fila(no *fim, char nome[]){
+  /*a fila sera' uma lista ligada com cabeca com dois ponteiros,
+    um apontando pra cabeca e outro apontando para o fim da fila*/
+  /*O lugar DA CABECA SERA 0*/
+  if(fim->lugar < 30){
+    no *novo = criar_no(nome);
+    novo->lugar = fim->lugar+1;
+    fim->prox = novo;
+    novo->prox = NULL;
+    fim = novo;
   }
-  return row;
+  return fim;
 }
 
-pilha *inserir_pilha(pilha *stack, char nome[], int pos){
-  /*se o resto da divisao por 5 for 0 entao a pilha esta cheia*/
+/*essa funcao verifica se a pilha esta cheia*/
+int verificar_pilha(no *pilha){
+  int count = 0;
+  while(pilha!=NULL){
+    count = count+1;
+    pilha = pilha->prox;
+  }
+  if (count < 5)
+    return 0;
+  else
+    return 1;
+}
+
+no *inserir_pilha(no *stack, char nome[], int pos){
   /*as pilhas sera-o listas ligadas simples*/
-  if (stack->lugar % 5 >= 0){
-    pilha *novo = criar_pilha(nome);
-    novo->prox = stack;
-    novo->lugar = pos;
-    return novo;
+  if (!verificar_pilha(stack)){
+    if (stack == NULL){
+      no *novo = criar_no(nome);
+      novo->lugar = pos;
+      return novo;
+    }
+    else{
+      no *novo = criar_no(nome);
+      novo->prox = stack;
+      novo->lugar = pos;
+      return novo;
+    }
   } else {
     return stack;
   }
 }
 
 /*ao remover da fila ela sera' inserida em uma pilha*/
-pilha *remover_fila(fila *row, pilha *stack){
-  /*na-o esquecer que a fila tem cabeça agora*/
+no *remover_fila(no *row, no *stack){
+  /*na-o esquecer que a fila tem cabeça*/
   stack = inserir_pilha(stack, row->prox->registro, row->prox->lugar);
-  fila *trash = row->prox;
+  no *trash = row->prox;
   row->prox = trash->prox;
-  trash->prox->ant = row;
   free(trash);
   return stack;
 }
 
 /*as pilhas sao listas ligadas simples*/
-pilha *remover_pilha(pilha *stack){
+no *remover_pilha(no *stack){
   if (stack != NULL){
-    pilha *trash = stack;
+    no *trash = stack;
     stack = stack->prox;
     free(trash);
   }
   return stack;
 }
 
-fila *libera_fila(fila *row){
-  fila *trash;
+no *libera_fila(no *row){
+  no *trash;
   while(row != NULL){
     trash = row;
     row = trash->prox;
@@ -92,8 +96,8 @@ fila *libera_fila(fila *row){
   return row;
 }
 
-pilha *libera_pilha(pilha *stack){
-  pilha *trash;
+no *libera_pilha(no *stack){
+  no *trash;
   while(stack != NULL){
     trash = stack;
     stack = trash->prox;
@@ -102,35 +106,28 @@ pilha *libera_pilha(pilha *stack){
   return stack;
 }
 
-/*essas func,a-o ira-o imprimir a fila e as pilhas quando o cmd for igual a P*/
-void imprime_fila(fila *row){
-  fila *aux = row->prox;
+/*essas func,oes ira-o imprimir a fila e as pilhas quando o cmd for igual a P*/
+void imprime_fila(no *row){
+  no *aux = row->prox;
   printf("%s", row->registro);
-  while(aux != row){
+  while(aux != NULL){
     printf("%d,", aux->lugar);
     aux = aux->prox;
   }
 }
 
-void imprime_pilha(pilha *stack){
-  while(stack != NULL){
-    printf("%d", stack->lugar);
-    stack = stack->prox;
+void imprime_pilha(no *stack){
+  if (stack != NULL){
+    imprime_pilha(stack->prox);
+    printf("%d,", stack->lugar);
   }
 }
 /*---------------------------------------------------------------------------*/
 
-/*essas funcoes imprime os dados de todas as pessoas no auditorio e na fila*/
-void dados_pilha(pilha *stack){
-  while(stack != NULL){
-    printf("%d,%s\n", stack->lugar, stack->registro);
-    stack = stack->prox;
-  }
-}
-
-void dados_fila(fila *row){
-  fila *aux = row->prox;
-  while(aux!=row){
+/*essa funcao imprime os dados de todas as pessoas no auditorio e na fila*/
+void dados_fila(no *row){
+  no *aux = row->prox;
+  while(aux!=NULL){
     printf("%d,%s\n", aux->lugar, aux->registro);
     aux = aux->prox;
   }
@@ -141,48 +138,58 @@ int main(){
   char cmd[2] = "J";
   int num;
   /*a fila é criada com uma cabeca, o lugar da cabeca e 0 e o registro e [Q]*/
-  fila *Row = criar_fila("[Q]");
-  Row->lugar = 0;
+  no *row = criar_no("[Q]");
+  no *end = row;
+  row->lugar = 0;
+  /*uma fila auxiliar e criada para a impressao dos dados no fim do programa*/
+  no *dados = criar_no("dados");
+  no *fimd = dados;
+  dados->lugar = 0;
   /*as pilhas serao listas ligadas simples*/
-  pilha *s1 = NULL, *s2 = NULL, *s3 = NULL, *s4 = NULL, *s5 = NULL, *s6 = NULL;
+  no *s1 = NULL, *s2 = NULL, *s3 = NULL, *s4 = NULL, *s5 = NULL, *s6 = NULL;
   /*---------------------------------*/
   while(cmd[0] != 'D'){
-    scanf("%c", cmd);
+    scanf("%c", &cmd[0]);
     if(cmd[0] == 'Q'){
       /*aqui serao feitas modificacoues na fila*/
-      scanf("%c", cmd);
+      scanf("%c", &cmd[0]);
       if(cmd[0] == 'I'){
         scanf("%d", &num);
         int i;
         for(i = 0; i<num; i++){
           char nome[53];
-          scanf("%s\n", nome);
-          Row = inserir_fila(Row, nome);
+          scanf("%[^\n]s", nome);
+          end = inserir_fila(end, nome);
+          fimd = inserir_fila(fimd, nome);
         }
+        /*no *t;
+        printf("\n");
+        for(t = row->prox; t != NULL; t = t->prox){
+          printf("%i",t->lugar);
+        }
+        printf("\n");*/
       }
       else if(cmd[0] == 'R'){
         scanf("%d", &num);
         int i;
         for(i = 0; i<num; i++){
-          char nome[53];
-          scanf("%s\n", nome);
-          if(Row->prox->lugar <= 5)
-            s1 = remover_fila(Row, s1);
-          else if(Row->prox->lugar <= 10)
-            s2 = remover_fila(Row, s2);
-          else if(Row->prox->lugar <= 15)
-            s3 = remover_fila(Row, s3);
-          else if(Row->prox->lugar <= 20)
-            s4 = remover_fila(Row, s4);
-          else if(Row->prox->lugar <= 25)
-            s5 = remover_fila(Row, s5);
-          else if(Row->prox->lugar <= 30)
-            s6 = remover_fila(Row, s6);
+          if(row->prox->lugar <= 5)
+            s1 = remover_fila(row, s1);
+          else if(row->prox->lugar <= 10)
+            s2 = remover_fila(row, s2);
+          else if(row->prox->lugar <= 15)
+            s3 = remover_fila(row, s3);
+          else if(row->prox->lugar <= 20)
+            s4 = remover_fila(row, s4);
+          else if(row->prox->lugar <= 25)
+            s5 = remover_fila(row, s5);
+          else if(row->prox->lugar <= 30)
+            s6 = remover_fila(row, s6);
         }
       }
     }
     if(cmd[0] == 'S'){
-      scanf("%c", cmd);
+      scanf("%c", &cmd[0]);
       scanf("%d", &num);
       int i;
       for(i = 0; i < num; i++){
@@ -201,7 +208,7 @@ int main(){
       }
     }
     if(cmd[0] == 'P'){
-      imprime_fila(Row); printf("\n");
+      imprime_fila(row); printf("\n");
       printf("[S1]"); imprime_pilha(s1); printf("\n");
       printf("[S2]"); imprime_pilha(s2); printf("\n");
       printf("[S3]"); imprime_pilha(s3); printf("\n");
@@ -211,13 +218,15 @@ int main(){
     }
   }
   if(cmd[0] == 'D'){
-    dados_pilha(s1);
-    dados_pilha(s2);
-    dados_pilha(s3);
-    dados_pilha(s4);
-    dados_pilha(s5);
-    dados_pilha(s6);
-    dados_fila(Row);
+    dados_fila(dados);
   }
+  libera_fila(row);
+  libera_fila(dados);
+  libera_pilha(s1);
+  libera_pilha(s2);
+  libera_pilha(s3);
+  libera_pilha(s4);
+  libera_pilha(s5);
+  libera_pilha(s6);
   return 0;
 }
