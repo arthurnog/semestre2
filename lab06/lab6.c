@@ -49,8 +49,11 @@ int verificar_pilha(no *pilha){
 
 no *inserir_pilha(no *stack, char nome[], int pos){
   /*as pilhas sera-o listas ligadas simples*/
-  if (!verificar_pilha(stack)){
-    if (stack == NULL){
+  if(verificar_pilha(stack)){
+    return stack;
+  }
+  else{
+    if(stack == NULL){
       no *novo = criar_no(nome);
       novo->lugar = pos;
       return novo;
@@ -61,18 +64,19 @@ no *inserir_pilha(no *stack, char nome[], int pos){
       novo->lugar = pos;
       return novo;
     }
-  } else {
-    return stack;
   }
 }
 
 /*ao remover da fila ela sera' inserida em uma pilha*/
 no *remover_fila(no *row, no *stack){
   /*na-o esquecer que a fila tem cabeça*/
-  stack = inserir_pilha(stack, row->prox->registro, row->prox->lugar);
-  no *trash = row->prox;
-  row->prox = trash->prox;
-  free(trash);
+  no *aux = row->prox;
+  if(aux!=NULL){
+    stack = inserir_pilha(stack, aux->registro, aux->lugar);
+    no *trash = row->prox;
+    row->prox = trash->prox;
+    free(trash);
+  }
   return stack;
 }
 
@@ -154,23 +158,17 @@ int main(){
       /*aqui serao feitas modificacoues na fila*/
       scanf("%c", &cmd[0]);
       if(cmd[0] == 'I'){
-        scanf("%d", &num);
+        scanf("%d\n", &num);
         int i;
         for(i = 0; i<num; i++){
           char nome[53];
-          scanf("%s\n", nome);
+          scanf(" %[^\n] ", nome);
           end = inserir_fila(end, nome);
           fimd = inserir_fila(fimd, nome);
         }
-        /*no *t;
-        printf("\n");
-        for(t = row->prox; t != NULL; t = t->prox){
-          printf("%i",t->lugar);
-        }
-        printf("\n");*/
       }
       else if(cmd[0] == 'R'){
-        scanf("%d", &num);
+        scanf("%d\n", &num);
         int i;
         for(i = 0; i<num; i++){
           if(row->prox->lugar <= 5)
@@ -190,7 +188,7 @@ int main(){
     }
     if(cmd[0] == 'S'){
       scanf("%c", &cmd[0]);
-      scanf("%d", &num);
+      scanf("%d\n", &num);
       int i;
       for(i = 0; i < num; i++){
         if (s6 != NULL)
