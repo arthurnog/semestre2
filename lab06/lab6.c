@@ -171,17 +171,17 @@ int main(){
         scanf("%d\n", &num);
         int i;
         for(i = 0; i<num; i++){
-          if(row->prox->lugar <= 5)
+          if(!verificar_pilha(s1))
             s1 = remover_fila(row, s1);
-          else if(row->prox->lugar <= 10)
+          else if(!verificar_pilha(s2))
             s2 = remover_fila(row, s2);
-          else if(row->prox->lugar <= 15)
+          else if(!verificar_pilha(s3))
             s3 = remover_fila(row, s3);
-          else if(row->prox->lugar <= 20)
+          else if(!verificar_pilha(s4))
             s4 = remover_fila(row, s4);
-          else if(row->prox->lugar <= 25)
+          else if(!verificar_pilha(s5))
             s5 = remover_fila(row, s5);
-          else if(row->prox->lugar <= 30)
+          else if(!verificar_pilha(s6))
             s6 = remover_fila(row, s6);
         }
       }
