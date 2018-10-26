@@ -2,10 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 typedef struct car{
   float axl, cont, vel;
   /*fazer isso usando uma lista ligada ou um vetor mesmo?*/
 }
+/*axl = aceleracao, cont = controle, vel = velocidade*/
+
 int main(){
   int IT, MC, C, P, i, j;
   /*IT = numero de iteracoes, MC = numero de carros*/
