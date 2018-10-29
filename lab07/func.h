@@ -11,12 +11,12 @@ typedef struct car{
 }
 
 typedef struct heap{
-  car *v;
+  car **v;
   int n, tamanho;
 } heap;
 
-void troca(car *a, car *b){
-  car *c;
+void troca(car **a, car **b){
+  car **c;
   c = a;
   a = b;
   b = c;
@@ -33,21 +33,21 @@ void inserir(heap *fp, car *p, int flag){
 }
 
 void subir_axl(heap *fp, int k){
-  if (k>0 && fp->v[pai(k)].axl <fp->v[k].axl){
+  if (k>0 && fp->v[pai(k)]->axl <fp->v[k]->axl){
     troca(&fp->v[k], &fp->v[pai(k)]);
     subir_axl(fp, pai(k));
   }
 }
 
 void subir_cont(heap *fp, int k){
-  if (k>0 && fp->v[pai(k)].cont <fp->v[k].cont){
+  if (k>0 && fp->v[pai(k)]->cont <fp->v[k]->cont){
     troca(&fp->v[k], &fp->v[pai(k)]);
     subir_cont(fp, pai(k));
   }
 }
 
 void subir_vel(heap *fp, int k){
-  if (k>0 && fp->v[pai(k)].vel <fp->v[k].vel){
+  if (k>0 && fp->v[pai(k)]->vel <fp->v[k]->vel){
     troca(&fp->v[k], &fp->v[pai(k)]);
     subir_vel(fp, pai(k));
   }
