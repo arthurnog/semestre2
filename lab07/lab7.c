@@ -1,13 +1,7 @@
 /*Arthur Lucas da Silva Nogueira 213293*/
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-/*#include "func.h"*/
 
-typedef struct car{
-  float axl, cont, vel;
-  /*fazer isso usando uma lista ligada ou um vetor mesmo?*/
-}
+#include "func.h"
+
 /*axl = aceleracao, cont = controle, vel = velocidade*/
 
 /*criar 3 filas de prioridade referente a cada uma das propriedades*/
