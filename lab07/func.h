@@ -48,3 +48,5 @@ void descer0(heap *fp, int k);
 void descer1(heap *fp, int k);
 
 void descer2(heap *fp, int k);
+
+void libera_fila(heap *fp);

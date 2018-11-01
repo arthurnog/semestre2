@@ -37,6 +37,7 @@ int main(){
         extrair2(fp0, fp1, fp2, 0 ,0);
     }
   }
+  libera_fila(fp0); libera_fila(fp1); libera_fila(fp2);
   return 0;
 }
 
@@ -80,7 +81,7 @@ void subir2(heap *fp, int k){
   }
 }
 
-void inserir(heap *fp0, *fp1, *fp2, car *c){
+void inserir(heap *fp0, heap *fp1, heap *fp2, car *c){
   fp0->v[fp0->n] = c;
   fp0->n++;
   c->p0 = fp0->n;
@@ -103,7 +104,7 @@ quando eu fizer a extracao eu vou ter que tirar das 3 listas
 tendo como referencia as posicoes salvas dentro da struct
 */
 
-void extrair0(heap *fp0, *fp1, *fp2, int a0, ok){
+void extrair0(heap *fp0, heap *fp1, heap *fp2, int a0, int ok){
   /*a variavel ok indica se os dados ja' foram impressos ou nao.
   se sim ok = 1 se nao ok = 0*/
   /*as variaveis a seguir guardam as posicoes do carro que ira ser retirado
@@ -128,7 +129,7 @@ void extrair0(heap *fp0, *fp1, *fp2, int a0, ok){
   free(fp0->v[n]);
 }
 
-void extrair1(heap *fp0, *fp1, *fp2, int a1, ok){
+void extrair1(heap *fp0, heap *fp1, heap *fp2, int a1, int ok){
   int a0 = fp1->v[a1]->p0;
   int a2 = fp1->v[a1]->p2;
   if (ok == 0){
@@ -147,7 +148,7 @@ void extrair1(heap *fp0, *fp1, *fp2, int a1, ok){
   free(fp1->v[n]);
 }
 
-void extrair2(heap *fp0, *fp1, *fp2, int a2, ok){
+void extrair2(heap *fp0, heap *fp1, heap *fp2, int a2, int ok){
   int a0 = fp2->v[a2]->p0;
   int a1 = fp2->v[a2]->p1;
   if (ok == 0){
@@ -215,4 +216,12 @@ void descer2(heap *fp, int k){
       descer2(fp, maior_filho);
     }
   }
+}
+
+void libera_fila(heap *fp){
+  int i;
+  for (i = 0; i<fp->n+1; i++){
+    free(fp->v[i]);
+  }
+  free(fp);
 }
