@@ -27,6 +27,14 @@ int main(){
     }
     for(j=0; j<P; j++){//VOCE ESTA AQUI
       /*nesse for os carros sao escolhidos e retirados do vetor*/
+      int cmd;
+      scanf("%d", &cmd);
+      if (cmd == 0)
+        extrair0(fp0, fp1, fp2, 0, 0);
+      else if (cmd == 1)
+        extrair1(fp0, fp1, fp2, 0, 0);
+      else if (cmd == 2)
+        extrair2(fp0, fp1, fp2, 0 ,0);
     }
   }
   return 0;
