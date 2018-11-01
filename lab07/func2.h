@@ -29,8 +29,7 @@ typedef struct heap{
 /*
 ok, agora supondo que eu tenha 3 heaps com um espaco definido, fp0 fp1 fp2
 ao inserir e ao remover eu devo fazer isso das 3 listas, na insercao
-eu devo guardar as posicoes nos vetores dentor da struct
-EU TO COM MUITO SONO!!!!
+eu devo guardar as posicoes nos vetores dentro da struct
 */
 
 void troca(car **a, car **b){
@@ -118,6 +117,7 @@ void extrair0(heap *fp0, *fp1, *fp2, int a0, ok){
   troca(&fp0->v[a0], &fp0->v[fp0->n-1]);
   fp0->n--;
   descer0(fp0, a0);
+  free(fp0->v[n]);
 }
 
 void extrair1(heap *fp0, *fp1, *fp2, int a1, ok){
@@ -136,6 +136,7 @@ void extrair1(heap *fp0, *fp1, *fp2, int a1, ok){
   troca(&fp1->v[a1], &fp1->v[fp1->n-1]);
   fp1->n--;
   descer1(fp1, a1);
+  free(fp1->v[n]);
 }
 
 void extrair2(heap *fp0, *fp1, *fp2, int a2, ok){
@@ -154,6 +155,7 @@ void extrair2(heap *fp0, *fp1, *fp2, int a2, ok){
   troca(&fp2->v[a2], &fp2->v[fp2->n-1]);
   fp2->n--;
   descer2(fp2, a2);
+  free(fp->v[n]);
 }
 
 void descer0(heap *fp, int k){

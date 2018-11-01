@@ -1,5 +1,15 @@
 /*Arthur Lucas da Silva Nogueira 213293*/
 
+/*
+o que sabemos?
+o lab funciona com listas de prioridade, o problema é que eu devo fazer 3 listas
+e não posso fazer uma busca, quando eu quiser acessar um elemento eu
+tenho que ir direto nele.
+Uma ideia é deixar armazenado na struct a posicao em cada uma das listas.
+o vetor vai ser compostos de ponteiros que apontam para um carro, ponteiros de
+diferentes listas, em posicoes diferentes apontarão para um mesmo carro.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,171 +19,32 @@
 
 typedef struct car{
   float axl, cont, vel;
-  int p0, p1, p2;
-  /*fazer isso usando uma lista ligada ou um vetor mesmo?*/
+  int p0, p1, p2;/*posicoes dentros das 3 listas*/
 }
 
 typedef struct heap{
-  car **v;
-  int n, tamanho;
+  car **v;/*o vetor do heap é formado por ponteiros apontando para os mesmo carros*/
+  int n, tamanho;/*n = posicao final atual (comeca no 0), tamanho = tamanho máximo*/
 } heap;
 
-void troca(car **a, car **b){
-  car **c;
-  c = a;
-  a = b;
-  b = c;
-}
+void troca(car **a, car **b);
 
-void subir_axl(heap *fp, int k){
-  if (k>0 && fp->v[pai(k)]->axl <fp->v[k]->axl){
-    int aux;
-    aux = fp->v[k]->p0;
-    fp->v[k]->p0 = fp->v[pai(k)]->p0;
-    fp->v[pai(k)]->p0 = aux;
-    troca(&fp->v[k], &fp->v[pai(k)]);
-    subir_axl(fp, pai(k));
-  }
-}
+void subir0(heap *fp, int k);
 
-void subir_cont(heap *fp, int k){
-  if (k>0 && fp->v[pai(k)]->cont <fp->v[k]->cont){
-    int aux;
-    aux = fp->v[k]->p1;
-    fp->v[k]->p1 = fp->v[pai(k)]->p1;
-    fp->v[pai(k)]->p1 = aux;
-    troca(&fp->v[k], &fp->v[pai(k)]);
-    subir_cont(fp, pai(k));
-  }
-}
+void subir1(heap *fp, int k);
 
-void subir_vel(heap *fp, int k){
-  if (k>0 && fp->v[pai(k)]->vel <fp->v[k]->vel){
-    int aux;
-    aux = fp->v[k]->p2;
-    fp->v[k]->p2 = fp->v[pai(k)]->p2;
-    fp->v[pai(k)]->p2 = aux;
-    troca(&fp->v[k], &fp->v[pai(k)]);
-    subir_vel(fp, pai(k));
-  }
-}
+void subir2(heap *fp, int k);
 
-void inserir(heap *fp0, heap *fp1, heap *fp2, car *p){
-  fp0->v[fp0->n] = p;
-  fp0->n++;
-  p->p0 = fp0->n;
-  fp1->v[fp1->n] = p;
-  fp1->n++;
-  p->p1 = fp1->n;
-  fp2->v[fp2->n] = p;
-  fp2->n++;
-  p->p2 = fp2->n;
-  subir_axl(fp0, fp0->n-1);
-  subir_cont(fp1, fp1->n-1);
-  subir_vel(fp2, fp2->n-1);
-}
+void inserir(heap *fp0, *fp1, *fp2, car *c);
 
-/*
-void descer(heap *fp, int k, int flag){
-  int maior_filho;
-  if(F_ESQ(k) < fp->n){
-    maior_filho = F_ESQ(k);
-    if(flag == 0){
-      if (F_DIR(k) < fp->n && fp->v[F_ESQ(k)]->axl < fp->v[F_DIR(k)]->axl)
-        maior_filho = F_DIR(k);
-      if(fp->v[k]->axl < fp->v[maior_filho]->axl){
-        troca(&fp->v[k], &fp->v[maior_filho]);
-        descer(fp, maior_filho, flag);
-      }
-    }
-    else if(flag == 1){
-      if (F_DIR(k) < fp->n && fp->v[F_ESQ(k)]->cont < fp->v[F_DIR(k)]->cont)
-        maior_filho = F_DIR(k);
-      if(fp->v[k]->cont < fp->v[maior_filho]->cont){
-        troca(&fp->v[k], &fp->v[maior_filho]);
-        descer(fp, maior_filho, flag);
-      }
-    }
-    else if(flag == 2){
-      if (F_DIR(k) < fp->n && fp->v[F_ESQ(k)]->vel < fp->v[F_DIR(k)]->vel)
-        maior_filho = F_DIR(k);
-      if(fp->v[k]->vel < fp->v[maior_filho]->vel){
-        troca(&fp->v[k], &fp->v[maior_filho]);
-        descer(fp, maior_filho, flag);
-      }
-    }
-  }
-}
-*/
+void extrair0(heap *fp0, *fp1, *fp2, int a0, ok);
 
-descer_axl(heap *fp, int k, int flag){
-  int maior_filho;
-    if(F_ESQ(k) < fp->n){
-      maior_filho = F_ESQ(k);
-      if(flag == 0){
-        if (F_DIR(k) < fp->n && fp->v[F_ESQ(k)]->axl < fp->v[F_DIR(k)]->axl)
-          maior_filho = F_DIR(k);
-        if(fp->v[k]->axl < fp->v[maior_filho]->axl){
-          int aux;
-          aux = fp->v[k]->p0;
-          fp->v[k]->p0 = fp->v[maior_filho]->p0;
-          fp->v[maior_filho]->p0 = aux;
-          troca(&fp->v[k], &fp->v[maior_filho]);
-          descer(fp, maior_filho, flag);
-      }
-    }
-  }
-}
+void extrair1(heap *fp0, *fp1, *fp2, int a1, ok);
 
-descer_cont(heap *fp, int k, int flag){
-  int maior_filho;
-    if(F_ESQ(k) < fp->n){
-      maior_filho = F_ESQ(k);
-      if(flag == 1){
-        if (F_DIR(k) < fp->n && fp->v[F_ESQ(k)]->cont < fp->v[F_DIR(k)]->cont)
-          maior_filho = F_DIR(k);
-        if(fp->v[k]->cont < fp->v[maior_filho]->cont){
-          int aux;
-          aux = fp->v[k]->p1;
-          fp->v[k]->p1 = fp->v[maior_filho]->p1;
-          fp->v[maior_filho]->p1 = aux;
-          troca(&fp->v[k], &fp->v[maior_filho]);
-          descer(fp, maior_filho, flag);
-      }
-    }
-  }
-}
+void extrair2(heap *fp0, *fp1, *fp2, int a2, ok);
 
-descer_vel(heap *fp, int k, int flag){
-  int maior_filho;
-    if(F_ESQ(k) < fp->n){
-      maior_filho = F_ESQ(k);
-      if(flag == 2){
-        if (F_DIR(k) < fp->n && fp->v[F_ESQ(k)]->vel < fp->v[F_DIR(k)]->vel)
-          maior_filho = F_DIR(k);
-        if(fp->v[k]->vel < fp->v[maior_filho]->vel){
-          int aux;
-          aux = fp->v[k]->p2;
-          fp->v[k]->p2 = fp->v[maior_filho]->p2;
-          fp->v[maior_filho]->p2 = aux;
-          troca(&fp->v[k], &fp->v[maior_filho]);
-          descer(fp, maior_filho, flag);
-      }
-    }
-  }
-}
+void descer0(heap *fp, int k);
 
-void extrair(heap *fp, int flag){
-  car *item = fp->v[0];
-  printf("%f %f %f\n", fp->v[0]->axl, fp->v[0]->cont, fp->v[0]->vel);
-  troca(&fp->v[0], &fp->v[fp->n-1]);
-  fp->n--;
-  /*descer(fp, 0, flag);*/
-  if(flag == 0)
-    descer_axl(fp, fp->n-1, flag);
-  else if(flag == 1)
-    descer_cont(fp, fp->n-1, flag);
-  else if(flag == 2)
-    descer_vel(fp, fp->n-1, flag);
-  free(fp->v[n]);
-}
+void descer1(heap *fp, int k);
+
+void descer2(heap *fp, int k);
