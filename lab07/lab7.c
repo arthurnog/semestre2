@@ -11,15 +11,16 @@ int main(){
   heap *fp0, *fp1, *fp2;
   fp0->tamanho = MC; fp1->tamanho = MC; fp2->tamanho = MC;
   fp0->n = 0; fp1->n = 0; fp2->n = 0;
-  fp0->v = (*car)malloc(MC*sizeof(car));
-  fp1->v = (*car)malloc(MC*sizeof(car));
-  fp2->v = (*car)malloc(MC*sizeof(car));
+  fp0->v = (car*)malloc(MC*sizeof(car));
+  fp1->v = (car*)malloc(MC*sizeof(car));
+  fp2->v = (car*)malloc(MC*sizeof(car));
   scanf("%d %d", &IT, &MC);
   for(i=0; i<IT; i++){
     /*C = numero de carros adicionados, P = numero de carros escolhidos na iteracao*/
     scanf("%d %d", &C, &P);
     for(j=0; j<C; j++){
-      scanf("%f %f %f", &a, &c, &v)
+      float a; float c; float v;
+      scanf("%f %f %f", &a, &c, &v);
       car *C;
       C->axl = a; C->cont = c; C->vel = v;
       /*nesse for os dados dos carros serao guardados*/
@@ -126,7 +127,7 @@ void extrair0(heap *fp0, heap *fp1, heap *fp2, int a0, int ok){
   troca(&fp0->v[a0], &fp0->v[fp0->n-1]);
   fp0->n--;
   descer0(fp0, a0);
-  free(fp0->v[n]);
+  free(fp0->v[fp0->n+1]);
 }
 
 void extrair1(heap *fp0, heap *fp1, heap *fp2, int a1, int ok){
@@ -145,7 +146,7 @@ void extrair1(heap *fp0, heap *fp1, heap *fp2, int a1, int ok){
   troca(&fp1->v[a1], &fp1->v[fp1->n-1]);
   fp1->n--;
   descer1(fp1, a1);
-  free(fp1->v[n]);
+  free(fp1->v[fp1->n+1]);
 }
 
 void extrair2(heap *fp0, heap *fp1, heap *fp2, int a2, int ok){
@@ -164,7 +165,7 @@ void extrair2(heap *fp0, heap *fp1, heap *fp2, int a2, int ok){
   troca(&fp2->v[a2], &fp2->v[fp2->n-1]);
   fp2->n--;
   descer2(fp2, a2);
-  free(fp->v[n]);
+  free(fp2->v[fp2->n+1]);
 }
 
 void descer0(heap *fp, int k){

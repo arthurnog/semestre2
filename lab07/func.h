@@ -20,7 +20,7 @@ diferentes listas, em posicoes diferentes apontarão para um mesmo carro.
 typedef struct car{
   float axl, cont, vel;
   int p0, p1, p2;/*posicoes dentros das 3 listas*/
-}
+} car;
 
 typedef struct heap{
   car **v;/*o vetor do heap é formado por ponteiros apontando para os mesmo carros*/
@@ -35,13 +35,13 @@ void subir1(heap *fp, int k);
 
 void subir2(heap *fp, int k);
 
-void inserir(heap *fp0, *fp1, *fp2, car *c);
+void inserir(heap *fp0, heap *fp1, heap *fp2, car *c);
 
-void extrair0(heap *fp0, *fp1, *fp2, int a0, ok);
+void extrair0(heap *fp0, heap *fp1, heap *fp2, int a0, int ok);
 
-void extrair1(heap *fp0, *fp1, *fp2, int a1, ok);
+void extrair1(heap *fp0, heap *fp1, heap *fp2, int a1, int ok);
 
-void extrair2(heap *fp0, *fp1, *fp2, int a2, ok);
+void extrair2(heap *fp0, heap *fp1, heap *fp2, int a2, int ok);
 
 void descer0(heap *fp, int k);
 
