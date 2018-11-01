@@ -6,25 +6,28 @@
 
 /*criar 3 filas de prioridade referente a cada uma das propriedades*/
 int main(){
-  int IT, MC, C, P, i, j;
+  int IT; int MC; int C; int P; int i; int j;
   /*IT = numero de iteracoes, MC = numero maximo de carros*/
   heap *fp0, *fp1, *fp2;
+  fp0 = (heap*)malloc(sizeof(heap));
+  fp1 = (heap*)malloc(sizeof(heap));
+  fp2 = (heap*)malloc(sizeof(heap));
+  scanf("%d %d", &IT, &MC);
   fp0->tamanho = MC; fp1->tamanho = MC; fp2->tamanho = MC;
   fp0->n = 0; fp1->n = 0; fp2->n = 0;
-  fp0->v = (car*)malloc(MC*sizeof(car));
-  fp1->v = (car*)malloc(MC*sizeof(car));
-  fp2->v = (car*)malloc(MC*sizeof(car));
-  scanf("%d %d", &IT, &MC);
+  fp0->v = (car**)malloc(MC*sizeof(car));
+  fp1->v = (car**)malloc(MC*sizeof(car));
+  fp2->v = (car**)malloc(MC*sizeof(car));
   for(i=0; i<IT; i++){
     /*C = numero de carros adicionados, P = numero de carros escolhidos na iteracao*/
     scanf("%d %d", &C, &P);
     for(j=0; j<C; j++){
       float a; float c; float v;
       scanf("%f %f %f", &a, &c, &v);
-      car *C;
-      C->axl = a; C->cont = c; C->vel = v;
+      car *h = (car*)malloc(sizeof(car));
+      h->axl = a; h->cont = c; h->vel = v;
       /*nesse for os dados dos carros serao guardados*/
-      inserir(fp0, fp1, fp2, C);
+      inserir(fp0, fp1, fp2, h);
     }
     for(j=0; j<P; j++){//VOCE ESTA AQUI
       /*nesse for os carros sao escolhidos e retirados do vetor*/
