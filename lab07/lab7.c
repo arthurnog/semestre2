@@ -25,7 +25,7 @@ int main(){
       /*nesse for os dados dos carros serao guardados*/
       inserir(fp0, fp1, fp2, C);
     }
-    for(j=0; j<P; j++){
+    for(j=0; j<P; j++){//VOCE ESTA AQUI
       /*nesse for os carros sao escolhidos e retirados do vetor*/
     }
   }
