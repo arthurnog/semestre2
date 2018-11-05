@@ -16,17 +16,18 @@ void diametro(no *r);
 void imprimir(no *r, char cmd[]);
 
 int main(){
-  int N = 9; char ordm[4] = "123"; int a;
-  while(N != 0 && ordm != "0"){
-    scanf("%d %s\n", &N, ordm);
+  int N = 9; char ordm[4] = "abc"; int a;
+  scanf("%d %s", &N, ordm);
+  while(N != 0 && strcmp(ordm, "0") != 0){
     int i; no *tree = NULL;
     for(i = 0; i<N; i++){
       scanf("%d", &a);
       tree = inserir(tree, a);
     }
     diametro(tree);
-    imprimir(tree, ordm);
+    imprimir(tree, ordm); printf("\n");
     tree = liberar(tree);
+    scanf("%d %s", &N, ordm);
   }
   return 0;
 }
@@ -82,25 +83,25 @@ int altura(no *r){
 
 void diametro(no *r){
   int D = 1+altura(r->esq)+altura(r->dir);
-  printf("Diametro da arvore binaria: %d", D)
+  printf("Diametro da arvore binaria: %d\n", D);
 }
 
 void imprimir(no *r, char cmd[]){
   if(r != NULL){
-    if(cmd == "pre"){
-      printf("%d", r->info);
+    if(strcmp(cmd, "pre") == 0){
+      printf("%d ", r->info);
       imprimir(r->esq, cmd);
       imprimir(r->dir, cmd);
     }
-    else if(cmd == "in"){
+    else if(strcmp(cmd, "in") == 0){
       imprimir(r->esq, cmd);
-      printf("%d", r->info);
+      printf("%d ", r->info);
       imprimir(r->dir, cmd);
     }
-    else if(cmd == "pos"){
+    else if(strcmp(cmd, "pos") == 0){
       imprimir(r->esq, cmd);
       imprimir(r->dir, cmd);
-      printf("%d", r->info);
+      printf("%d ", r->info);
     }
   }
 }
