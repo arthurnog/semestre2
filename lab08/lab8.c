@@ -12,7 +12,7 @@ no *busca(no *r, int v);
 no *inserir(no *r, int v);
 no *liberar(no *r);
 int altura(no *r);
-void diametro(no *r);
+int diametro(no *r);
 void imprimir(no *r, char cmd[]);
 
 int main(){
@@ -24,7 +24,8 @@ int main(){
       scanf("%d", &a);
       tree = inserir(tree, a);
     }
-    diametro(tree);
+    /*diamentro da arvore*/
+    printf("Diametro da arvore binaria: %d\n", diametro(tree));
     imprimir(tree, ordm); printf("\n");
     tree = liberar(tree);
     scanf("%d %s", &N, ordm);
@@ -81,9 +82,32 @@ int altura(no *r){
   }
 }
 
-void diametro(no *r){
-  int D = 1+altura(r->esq)+altura(r->dir);
-  printf("Diametro da arvore binaria: %d\n", D);
+/*
+int diametro(no *r){
+  if(r!=NULL)
+    return 1+altura(r->esq)+altura(r->dir);
+  else
+    return 0;
+}
+*/
+
+int diametro(no *r){
+  if (r == NULL)
+    return 0;
+  else{
+    int D = 1+altura(r->esq)+altura(r->dir);
+    if (diametro(r->esq) > D){
+      if (diametro(r->esq)>diametro(r->dir))
+        return diametro(r->esq);
+      else
+        return diametro(r->dir);
+    }
+    else if (diametro(r->dir) > D){
+      return diametro(r->dir);
+    }
+    else
+      return D;
+  }
 }
 
 void imprimir(no *r, char cmd[]){
