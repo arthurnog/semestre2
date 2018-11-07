@@ -2,7 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//8
+
+typedef struct no{
+  char palavra[9];
+  int altura;
+  struct no *esq, *dir;
+} no;
+/*LER AVL COM MUITA ATENCAO!!!*/
 int main(){
   char word[9];
   /*como as palavras reservadas sao todas em letras minusculas e nenhuma delas
@@ -13,4 +19,21 @@ int main(){
   }
   /*impressao zig zag*/
   return 0;
+}
+
+no *criar_no(char word[]) {
+  no *novo = (no*)malloc(sizeof(no));
+  if(novo == NULL)
+    return NULL;
+  no->palavra = word;
+  no->altura = 1;
+  no->esq = NULL;
+  no->dir = NULL;
+  return novo;
+}
+
+int altura(no *raiz){
+  if(raiz == NULL)
+    return 0;
+  return raiz->altura;
 }
