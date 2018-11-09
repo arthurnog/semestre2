@@ -111,3 +111,28 @@ no *inserir(no *r, char word[]){
 
   return r;
 }
+
+/*zig = rotacão direita, zag = rotaçao esquerda*/
+no *rot_zag(no *x){
+  no *y = x->dir;
+  y->dir = x->esq;
+  x->esq = x;
+  return y;
+}
+
+no *rot_zig(no *x){
+  no *y = x->esq;
+  x->esq = y->dir;
+  y->dir = x;
+  return y;
+}
+
+void imprimir_arvore(no *raiz){
+  /*a impressao deve ser feita em zig-zag. Eu poderia tambem remover a chave
+    apos a impressao da palavra que esta nela*/
+  if(raiz == NULL)
+    return;
+  else{
+    
+  }
+}
