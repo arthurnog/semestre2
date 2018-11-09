@@ -37,3 +37,49 @@ int altura(no *raiz){
     return 0;
   return raiz->altura;
 }
+
+int fator_balanceamento(no *r){
+  if(r == NULL)
+    return 0;
+  return altura(r->dir) - altura(r->esq);
+}
+
+int max(int a, int b){
+  if(a>b)
+    return a;
+  else
+    return b;
+}
+
+no *rot_esq(no *a){
+  no *b = a->dir;
+  no *c = b->esq;
+
+  b->esq = a;
+  a->dir = c;
+
+  a->altura = max(altura(a->esq), altura(a->dir)) +1;
+  b->altura = max(altura(b->esq), altura(b->dir)) +1;
+
+  return b;
+}
+
+no *rot_dir(no *b){
+  no *a = b->esq;
+  no *c = a->dir;
+
+  a->dir = b;
+  b->esq = c;
+
+  b->altura = max(altura(b->esq), altura(b->dir))+1;
+  a->altura = max(altura(a->esq), altura(a->dir))+1;
+
+  return a;
+}
+
+no *inserir(no *r, char word[]){
+  int balanceamento;
+  if(r == NULL)
+    return criar_no(word);
+  /*criar funcao de ordem alfabetica*/
+}
