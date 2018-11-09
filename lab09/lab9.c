@@ -81,5 +81,33 @@ no *inserir(no *r, char word[]){
   int balanceamento;
   if(r == NULL)
     return criar_no(word);
-  /*criar funcao de ordem alfabetica*/
+  /*com o strcmp eu verifico qual a ordem das palavras em ordem alfabetica*/
+  if(strcmp(word, r->palavra)<0)
+    r->esq = inserir(r->esq, word);
+  else if(strcmp(word, r->palavra)>0)
+    r->dir = inserir(r->dir, word);
+  else
+    return r;
+
+  r->altura = 1+ max(altura(r->esq), altura(r->dir));
+
+  balanceamento = fator_balanceamento(r);
+
+  if(balanceamento >1 && strcmp(word, r->esq->palavra)<0)
+    return rot_dir(r);
+
+  if(balanceamento < -1 && strcmp(word, r->dir->palavra)>0)
+    return rot_esq(r);
+
+  if(balanceamento >1 && strcmp(word, r->esq->palavra)>0){
+    r->esq = rot_esq(r->esq);
+    return rot_dir(r);
+  }
+
+  if(balanceamento < -1 && strcmp(word, r->dir->palavra)<0){
+    r->dir = rot_dir(r->dir);
+    return rot_esq(r);
+  }
+
+  return r;
 }
