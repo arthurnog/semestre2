@@ -184,12 +184,67 @@ no *remover(no *r, char word[]){
   return r;
 }
 
-void imprimir_arvore(no *raiz){
-  /*a impressao deve ser feita em zig-zag. Eu poderia tambem remover a chave
-    apos a impressao da palavra que esta nela*/
-  if(raiz == NULL)
-    return;
-  else{
+/*imprimir a arvore em zig-zag do jeito que deve ser feito se tornou um desafio,
+entao eu tive a ideia de adicionar todos os elementos a serem impressos em uma
+e entao eu imprimi-los na ordem e da maneira correta*/
+no *adicionar_fila(char word[], int high, no *fim){
+  /*o fim da fila sempre aponta para nulo e o ponteiro que aponta para o proximo
+  é o dir e o esq aponta sempre pra nulo*/
+  /*pra isso funcionar a fila devera ter uma cabeca*/
+  no *a = (no*)malloc(sizeof(no));
+  a->palavra = word;
+  a->altura = high;
+  a->dir = NULL;
+  a->esq = NULL;
+  fim->dir = a;
+  fim = a;
+  return fim;
+}
 
+void imprime_fila(no *fila){
+  /*a impressao e feita de forma que os nos com a mesma altura fiquem na mesma linha*/
+  no *aux = fila->dir;
+  printf("[ ");
+  while(aux != NULL){
+    printf("%s ", aux->palavra);
+    if(aux->dir->altura != aux->altura)
+      printf("]\n[ ");
+    aux = aux->dir;
   }
+  printf("]");
+}
+
+no *liberar_fila(no *fila){
+  /*depois da impressao a memoria alocada para a fila e liberada*/
+  no *a
+  while(fila!=NULL){
+    a = fila;
+    fila = fila->dir;
+    free(a);
+  }
+  return fila;
+}
+
+void imprimir_arvore(no *raiz, no *fila, no *fim, int direcao){
+  /*nessa funcao cada no da arvore sera adicionada em uma fila e entao removida
+  da arvore e depois que a arvore estive completamente vazia a fila sera impressa
+  de forma que os nos que estao na mesma altura seja impressos juntos*/
+  /*a variavel direcao indica se ela vai rotacionar zig(0) ou zag(1)*/
+  /*quando a funcao for chamada na main a direcao sera 0*/
+  while(raiz != NULL){
+    if(direcao == 0){
+      adicionar_fila(raiz->palavra, raiz->altura, fim);
+      raiz = rot_zig(raiz);
+      raiz->dir = remover(raiz->dir, raiz->dir->palavra);
+      direcao = 1;
+    }
+    else{
+      adicionar_fila(raiz->palavra, raiz->altura, fim);
+      raiz = rot_zag(raiz);
+      raiz->esq = remover(raiz->esq, raiz->esq->palavra);
+      direcao = 0;
+    }
+  }
+  imprime_fila(fila);
+  fila  = liberar_fila(fila);
 }
