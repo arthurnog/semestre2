@@ -8,7 +8,24 @@ typedef struct no{
   int altura;
   struct no *esq, *dir;
 } no;
-/*LER AVL COM MUITA ATENCAO!!!*/
+
+no *criar_no(char word[]);
+int altura(no *raiz);
+int fator_balanceamento(no *r);
+int max(int a, int b);
+no *rot_esq(no *a);
+no *rot_dir(no *b);
+no *inserir(no *r, char word[]);
+no *rot_zag(no *x);
+no *rot_zig(no *x);
+no *minimo(no *r);
+no *remover(no *r, char word[]);
+no *adicionar_fila(char word[], int high, no *fim);
+void imprime_fila(no *fila);
+no *liberar_fila(no *fila);
+void imprimir_arvore(no *raiz, no *fila, no *fim, int direcao);
+
+
 int main(){
   char word[9];
   /*como as palavras reservadas sao todas em letras minusculas e nenhuma delas
