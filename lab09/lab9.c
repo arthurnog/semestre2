@@ -28,8 +28,14 @@ void imprimir_arvore(no *raiz, no *fila, no *fim, int direcao);
 
 int main(){
   char word[9];
-  /*primeiro eu crio uma arc=vore de busca com todas as palavras reservadas*/
   no *palavras_reservadas = NULL;
+  no *arvore = NULL;
+  no *fila = (no*)malloc(sizeof(no));
+  fila->esq = NULL;
+  fila->dir = NULL;
+  fila->palavra = "head";
+  no *fim = fila;
+  /*primeiro eu crio uma arvore de busca com todas as palavras reservadas*/
   palavras_reservadas = inserir(palavras_reservadas, "auto");
   palavras_reservadas = inserir(palavras_reservadas, "double");
   palavras_reservadas = inserir(palavras_reservadas, "int");
@@ -65,10 +71,11 @@ int main(){
   /*como as palavras reservadas sao todas em letras minusculas e nenhuma delas
   tem mais de 8 letras e valido fazer isso*/
   while(scanf("%[a-z]", word) != EOF){
-    /*if word esta na lista de palavras reservadas*/
-      /*inserir word na arvore AVL*/
+    if (!busca(palavras_reservadas, word))
+      inserir(arvore, word);
   }
-  /*impressao zig zag*/
+  imprimir_arvore(arvore, fila, fim, 0);
+  fila  = liberar_fila(fila);
   return 0;
 }
 
@@ -147,6 +154,7 @@ no *inserir(no *r, char word[]){
   int balanceamento;
   if(r == NULL)
     return criar_no(word);
+
   if(busca(r, word))
     return r;
   else{
@@ -314,5 +322,4 @@ void imprimir_arvore(no *raiz, no *fila, no *fim, int direcao){
     }
   }
   imprime_fila(fila);
-  fila  = liberar_fila(fila);
 }
