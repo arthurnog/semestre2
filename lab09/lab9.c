@@ -28,6 +28,40 @@ void imprimir_arvore(no *raiz, no *fila, no *fim, int direcao);
 
 int main(){
   char word[9];
+  /*primeiro eu crio uma arc=vore de busca com todas as palavras reservadas*/
+  no *palavras_reservadas = NULL;
+  palavras_reservadas = inserir(palavras_reservadas, "auto");
+  palavras_reservadas = inserir(palavras_reservadas, "double");
+  palavras_reservadas = inserir(palavras_reservadas, "int");
+  palavras_reservadas = inserir(palavras_reservadas, "struct");
+  palavras_reservadas = inserir(palavras_reservadas, "break");
+  palavras_reservadas = inserir(palavras_reservadas, "else");
+  palavras_reservadas = inserir(palavras_reservadas, "long");
+  palavras_reservadas = inserir(palavras_reservadas, "switch");
+  palavras_reservadas = inserir(palavras_reservadas, "case");
+  palavras_reservadas = inserir(palavras_reservadas, "enum");
+  palavras_reservadas = inserir(palavras_reservadas, "register");
+  palavras_reservadas = inserir(palavras_reservadas, "typedef");
+  palavras_reservadas = inserir(palavras_reservadas, "char");
+  palavras_reservadas = inserir(palavras_reservadas, "extern");
+  palavras_reservadas = inserir(palavras_reservadas, "return");
+  palavras_reservadas = inserir(palavras_reservadas, "union");
+  palavras_reservadas = inserir(palavras_reservadas, "continue");
+  palavras_reservadas = inserir(palavras_reservadas, "for");
+  palavras_reservadas = inserir(palavras_reservadas, "signed");
+  palavras_reservadas = inserir(palavras_reservadas, "void");
+  palavras_reservadas = inserir(palavras_reservadas, "do");
+  palavras_reservadas = inserir(palavras_reservadas, "if");
+  palavras_reservadas = inserir(palavras_reservadas, "static");
+  palavras_reservadas = inserir(palavras_reservadas, "while");
+  palavras_reservadas = inserir(palavras_reservadas, "default");
+  palavras_reservadas = inserir(palavras_reservadas, "goto");
+  palavras_reservadas = inserir(palavras_reservadas, "sizeof");
+  palavras_reservadas = inserir(palavras_reservadas, "volatile");
+  palavras_reservadas = inserir(palavras_reservadas, "const");
+  palavras_reservadas = inserir(palavras_reservadas, "float");
+  palavras_reservadas = inserir(palavras_reservadas, "short");
+  palavras_reservadas = inserir(palavras_reservadas, "unsigned");
   /*como as palavras reservadas sao todas em letras minusculas e nenhuma delas
   tem mais de 8 letras e valido fazer isso*/
   while(scanf("%[a-z]", word) != EOF){
@@ -94,39 +128,56 @@ no *rot_dir(no *b){
   return a;
 }
 
+int busca(no *r, word[]){
+  if(r == NULL)
+    return 0;
+  else{
+    if(word == r->palavra)
+      return 1;
+    else{
+      if(strcmp(word, r->palavra)<0)
+        return busca(r->esq, word);
+      else
+        return busca(r->dir, word);
+    }
+  }
+}
+
 no *inserir(no *r, char word[]){
   int balanceamento;
   if(r == NULL)
     return criar_no(word);
-  /*com o strcmp eu verifico qual a ordem das palavras em ordem alfabetica*/
-  if(strcmp(word, r->palavra)<0)
-    r->esq = inserir(r->esq, word);
-  else if(strcmp(word, r->palavra)>0)
-    r->dir = inserir(r->dir, word);
-  else
+  if(busca(r, word))
     return r;
+  else{
+    /*com o strcmp eu verifico qual a ordem das palavras em ordem alfabetica*/
+    if(strcmp(word, r->palavra)<0)
+      r->esq = inserir(r->esq, word);
+    else if(strcmp(word, r->palavra)>0)
+      r->dir = inserir(r->dir, word);
+    else
+      return r;
 
-  r->altura = 1+ max(altura(r->esq), altura(r->dir));
+    r->altura = 1+ max(altura(r->esq), altura(r->dir));
 
-  balanceamento = fator_balanceamento(r);
+    balanceamento = fator_balanceamento(r);
 
-  if(balanceamento >1 && strcmp(word, r->esq->palavra)<0)
-    return rot_dir(r);
+    if(balanceamento >1 && strcmp(word, r->esq->palavra)<0)
+      return rot_dir(r);
 
-  if(balanceamento < -1 && strcmp(word, r->dir->palavra)>0)
-    return rot_esq(r);
+    if(balanceamento < -1 && strcmp(word, r->dir->palavra)>0)
+      return rot_esq(r);
 
-  if(balanceamento >1 && strcmp(word, r->esq->palavra)>0){
-    r->esq = rot_esq(r->esq);
-    return rot_dir(r);
+    if(balanceamento >1 && strcmp(word, r->esq->palavra)>0){
+      r->esq = rot_esq(r->esq);
+      return rot_dir(r);
+    }
+
+    if(balanceamento < -1 && strcmp(word, r->dir->palavra)<0){
+      r->dir = rot_dir(r->dir);
+      return rot_esq(r);
+    }
   }
-
-  if(balanceamento < -1 && strcmp(word, r->dir->palavra)<0){
-    r->dir = rot_dir(r->dir);
-    return rot_esq(r);
-  }
-
-  return r;
 }
 
 /*zig = rotacão direita, zag = rotaçao esquerda*/
