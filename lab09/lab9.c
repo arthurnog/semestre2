@@ -24,6 +24,7 @@ no *adicionar_fila(char word[], int high, no *fim);
 void imprime_fila(no *fila);
 no *liberar_fila(no *fila);
 void imprimir_arvore(no *raiz, no *fila, no *fim, int direcao);
+int busca(no *r, char word[]);
 
 
 int main(){
@@ -33,7 +34,7 @@ int main(){
   no *fila = (no*)malloc(sizeof(no));
   fila->esq = NULL;
   fila->dir = NULL;
-  fila->palavra = "head";
+  strcpy(fila->palavra,"head");
   no *fim = fila;
   /*primeiro eu crio uma arvore de busca com todas as palavras reservadas*/
   palavras_reservadas = inserir(palavras_reservadas, "auto");
@@ -71,7 +72,7 @@ int main(){
   /*como as palavras reservadas sao todas em letras minusculas e nenhuma delas
   tem mais de 8 letras e valido fazer isso*/
   while(scanf("%[a-z]", word) != EOF){
-    if (!busca(palavras_reservadas, word))
+    if (busca(palavras_reservadas, word) == 0)
       inserir(arvore, word);
   }
   imprimir_arvore(arvore, fila, fim, 0);
@@ -83,10 +84,10 @@ no *criar_no(char word[]) {
   no *novo = (no*)malloc(sizeof(no));
   if(novo == NULL)
     return NULL;
-  no->palavra = word;
-  no->altura = 1;
-  no->esq = NULL;
-  no->dir = NULL;
+  strcpy(novo->palavra, word);
+  novo->altura = 1;
+  novo->esq = NULL;
+  novo->dir = NULL;
   return novo;
 }
 
@@ -135,7 +136,7 @@ no *rot_dir(no *b){
   return a;
 }
 
-int busca(no *r, word[]){
+int busca(no *r, char word[]){
   if(r == NULL)
     return 0;
   else{
@@ -186,6 +187,7 @@ no *inserir(no *r, char word[]){
       return rot_esq(r);
     }
   }
+  return r;
 }
 
 /*zig = rotacão direita, zag = rotaçao esquerda*/
@@ -268,7 +270,7 @@ no *adicionar_fila(char word[], int high, no *fim){
   é o dir e o esq aponta sempre pra nulo*/
   /*pra isso funcionar a fila devera ter uma cabeca*/
   no *a = (no*)malloc(sizeof(no));
-  a->palavra = word;
+  strcpy(a->palavra, word);
   a->altura = high;
   a->dir = NULL;
   a->esq = NULL;
@@ -292,7 +294,7 @@ void imprime_fila(no *fila){
 
 no *liberar_fila(no *fila){
   /*depois da impressao a memoria alocada para a fila e liberada*/
-  no *a
+  no *a;
   while(fila!=NULL){
     a = fila;
     fila = fila->dir;
