@@ -71,8 +71,7 @@ int main(){
   palavras_reservadas = inserir(palavras_reservadas, "short");
   palavras_reservadas = inserir(palavras_reservadas, "unsigned");
 
-  /*como as palavras reservadas sao todas em letras minusculas e nenhuma delas
-  tem mais de 8 letras e valido fazer isso*/
+  /*aqui eu leio as palavras digitadas no input e verifico se elas sao palavras reservadas*/
   while(scanf("%s", word) != EOF){
     char *w = word;
     printf("\n%20s", w);
@@ -101,13 +100,13 @@ int main(){
       if(b == 'v')
         p++;
 
-      printf("-->{ %s }\n", w);
-      printf("start { %p }\n", palavras_reservadas);
+      //printf("-->{ %s }\n", w);
+      //printf("start { %p }\n", palavras_reservadas);
       if (*w != '\0' && busca(palavras_reservadas, w) == 0){
-        printf("-->[ %s ]", w);
-        // arvore = inserir(arvore, w);
+        //printf("-->[ %s ]", w);
+         arvore = inserir(arvore, w);
       }
-      printf("  end { %p }\n", palavras_reservadas);
+      //printf("  end { %p }\n", palavras_reservadas);
 
       w = p;
     }
