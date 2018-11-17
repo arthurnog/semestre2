@@ -36,6 +36,7 @@ int main(){
   fila->dir = NULL;
   strcpy(fila->palavra,"head");
   no *fim = fila;
+
   /*primeiro eu crio uma arvore de busca com todas as palavras reservadas*/
   palavras_reservadas = inserir(palavras_reservadas, "auto");
   palavras_reservadas = inserir(palavras_reservadas, "double");
@@ -69,45 +70,88 @@ int main(){
   palavras_reservadas = inserir(palavras_reservadas, "float");
   palavras_reservadas = inserir(palavras_reservadas, "short");
   palavras_reservadas = inserir(palavras_reservadas, "unsigned");
+
   /*como as palavras reservadas sao todas em letras minusculas e nenhuma delas
   tem mais de 8 letras e valido fazer isso*/
-  while(scanf("%[a-z]", word) != EOF){
-    if (busca(palavras_reservadas, word) == 0)
-      inserir(arvore, word);
+  while(scanf("%s", word) != EOF){
+    char *w = word;
+    printf("\n%20s", w);
+
+    while(*w != '\0'){
+
+      while(*w != '\0'){
+        if((*w >= 'a' && *w <= 'z') || (*w >= 'A' && *w <= 'Z'))
+          break;
+
+        w++;
+      }
+
+
+      char *p = w;
+      char b = 'f';
+      while(*p != '\0'){
+        if((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z'))
+          p++;
+        else{
+          *p = '\0';
+          b = 'v';
+        }
+      }
+
+      if(b == 'v')
+        p++;
+
+      printf("-->{ %s }\n", w);
+      printf("start { %p }\n", palavras_reservadas);
+      if (*w != '\0' && busca(palavras_reservadas, w) == 0){
+        printf("-->[ %s ]", w);
+        // arvore = inserir(arvore, w);
+      }
+      printf("  end { %p }\n", palavras_reservadas);
+
+      w = p;
+    }
   }
-  imprimir_arvore(arvore, fila, fim, 0);
-  fila  = liberar_fila(fila);
+
+  // imprimir_arvore(arvore, fila, fim, 0);
+  // fila  = liberar_fila(fila);
+
   return 0;
 }
 
 no *criar_no(char word[]) {
-  no *novo = (no*)malloc(sizeof(no));
-  if(novo == NULL)
+  no *novo = (no*) malloc(sizeof(no));
+
+  if(!novo)
     return NULL;
+
   strcpy(novo->palavra, word);
   novo->altura = 1;
   novo->esq = NULL;
   novo->dir = NULL;
+
   return novo;
 }
 
 int altura(no *raiz){
-  if(raiz == NULL)
+  if(!raiz)
     return 0;
+
   return raiz->altura;
 }
 
 int fator_balanceamento(no *r){
-  if(r == NULL)
+  if(!r)
     return 0;
+
   return altura(r->dir) - altura(r->esq);
 }
 
 int max(int a, int b){
-  if(a>b)
+  if(a > b)
     return a;
-  else
-    return b;
+
+  return b;
 }
 
 no *rot_esq(no *a){
@@ -117,8 +161,8 @@ no *rot_esq(no *a){
   b->esq = a;
   a->dir = c;
 
-  a->altura = max(altura(a->esq), altura(a->dir)) +1;
-  b->altura = max(altura(b->esq), altura(b->dir)) +1;
+  a->altura = max( altura(a->esq), altura(a->dir) ) +1;
+  b->altura = max( altura(b->esq), altura(b->dir) ) +1;
 
   return b;
 }
@@ -130,63 +174,65 @@ no *rot_dir(no *b){
   a->dir = b;
   b->esq = c;
 
-  b->altura = max(altura(b->esq), altura(b->dir))+1;
-  a->altura = max(altura(a->esq), altura(a->dir))+1;
+  b->altura = max( altura(b->esq), altura(b->dir) ) + 1;
+  a->altura = max( altura(a->esq), altura(a->dir) ) + 1;
 
   return a;
 }
 
 int busca(no *r, char word[]){
-  if(r == NULL)
+  printf("\n-------------\n");
+  printf("R: %p\n", r);
+  if(!r)
     return 0;
-  else{
-    if(word == r->palavra)
-      return 1;
-    else{
-      if(strcmp(word, r->palavra)<0)
-        return busca(r->esq, word);
-      else
-        return busca(r->dir, word);
-    }
-  }
+
+  printf("WORD %s\n", word);
+  printf("PALA %s\n", r->palavra);
+  if(strcmp(word, r->palavra) == 0)
+    return 1;
+
+  if(strcmp(word, r->palavra) < 0)
+    return busca(r->esq, word);
+
+  return busca(r->dir, word);
 }
 
-no *inserir(no *r, char word[]){
-  int balanceamento;
-  if(r == NULL)
+no* inserir(no* r, char word[]){
+  //normal inseririon
+  if(!r)
     return criar_no(word);
 
-  if(busca(r, word))
-    return r;
-  else{
-    /*com o strcmp eu verifico qual a ordem das palavras em ordem alfabetica*/
-    if(strcmp(word, r->palavra)<0)
-      r->esq = inserir(r->esq, word);
-    else if(strcmp(word, r->palavra)>0)
-      r->dir = inserir(r->dir, word);
-    else
-      return r;
+  if(strcmp(word, r->palavra) < 0)
+    r->esq = inserir(r->esq, word);
+  else
+    r->dir = inserir(r->dir, word);
 
-    r->altura = 1+ max(altura(r->esq), altura(r->dir));
+  /* ### Balanceia a arvore ### */
 
-    balanceamento = fator_balanceamento(r);
+  r->altura = max( altura(r->esq), altura(r->dir) ) + 1;
 
-    if(balanceamento >1 && strcmp(word, r->esq->palavra)<0)
-      return rot_dir(r);
+  int balanceamento = fator_balanceamento(r);
 
-    if(balanceamento < -1 && strcmp(word, r->dir->palavra)>0)
-      return rot_esq(r);
+  // balanceamento -> -1, 0, 1
 
-    if(balanceamento >1 && strcmp(word, r->esq->palavra)>0){
-      r->esq = rot_esq(r->esq);
-      return rot_dir(r);
-    }
+  if(balanceamento > 1){
+    int b = fator_balanceamento(r->dir);
 
-    if(balanceamento < -1 && strcmp(word, r->dir->palavra)<0){
+    if(b == -1)
       r->dir = rot_dir(r->dir);
-      return rot_esq(r);
-    }
+
+    r = rot_esq(r);
   }
+
+  if(balanceamento < -1){
+    int b = fator_balanceamento(r->esq);
+
+    if(b == 1)
+      r->esq = rot_esq(r->esq);
+
+    r = rot_dir(r);
+  }
+
   return r;
 }
 
@@ -195,6 +241,7 @@ no *rot_zag(no *x){
   no *y = x->dir;
   y->dir = x->esq;
   x->esq = x;
+
   return y;
 }
 
@@ -202,34 +249,39 @@ no *rot_zig(no *x){
   no *y = x->esq;
   x->esq = y->dir;
   y->dir = x;
+
   return y;
 }
 
 no *minimo(no *r){
   if(strcmp(r->dir->palavra, r->esq->palavra)<0)
     return r->dir;
-  else
-    return r->esq;
+
+  return r->esq;
 }
 
 no *remover(no *r, char word[]){
   no *temp;
   int balanceamento;
-  if(r==NULL)
-    return r;
+
+  if(!r)
+    return NULL;
+
   if(strcmp(word, r->palavra)<0)
     r->esq = remover(r->esq, word);
   else if(strcmp(word,r->palavra)>0)
     r->dir = remover(r->dir, word);
   else{
-    if((r->esq == NULL) || (r->dir == NULL)){
+    if(r->esq == NULL || r->dir == NULL){
       temp = r->esq ? r->esq : r->dir;
+
       if(temp == NULL){
         temp = r;
         r = NULL;
       }
       else
         *r = *temp;
+
       free(temp);
     }
     else{
@@ -238,8 +290,10 @@ no *remover(no *r, char word[]){
       r->dir = remover(r->dir, temp->palavra);
     }
   }
-  if(r == NULL)
-    return r;
+
+  if(!r)
+    return NULL;
+
   r->altura = 1 + max(altura(r->esq), altura(r->dir));
   balanceamento = fator_balanceamento(r);
 
@@ -283,23 +337,27 @@ void imprime_fila(no *fila){
   /*a impressao e feita de forma que os nos com a mesma altura fiquem na mesma linha*/
   no *aux = fila->dir;
   printf("[ ");
+
   while(aux != NULL){
     printf("%s ", aux->palavra);
     if(aux->dir->altura != aux->altura)
       printf("]\n[ ");
     aux = aux->dir;
   }
+
   printf("]");
 }
 
 no *liberar_fila(no *fila){
   /*depois da impressao a memoria alocada para a fila e liberada*/
   no *a;
-  while(fila!=NULL){
+
+  while(fila){
     a = fila;
     fila = fila->dir;
     free(a);
   }
+
   return fila;
 }
 
@@ -309,7 +367,7 @@ void imprimir_arvore(no *raiz, no *fila, no *fim, int direcao){
   de forma que os nos que estao na mesma altura seja impressos juntos*/
   /*a variavel direcao indica se ela vai rotacionar zig(0) ou zag(1)*/
   /*quando a funcao for chamada na main a direcao sera 0*/
-  while(raiz != NULL){
+  while(raiz)
     if(direcao == 0){
       adicionar_fila(raiz->palavra, raiz->altura, fim);
       raiz = rot_zig(raiz);
@@ -322,6 +380,6 @@ void imprimir_arvore(no *raiz, no *fila, no *fim, int direcao){
       raiz->esq = remover(raiz->esq, raiz->esq->palavra);
       direcao = 0;
     }
-  }
+
   imprime_fila(fila);
 }
